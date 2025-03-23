@@ -1,0 +1,16 @@
+.button {
+    box-sizing: border-box;
+    border: none;
+    cursor: pointer;
+
+    &.primary {
+        color: var(--color-white);
+        background-color: var(--color-purple);
+        border-radius: 6px;
+        height: 36px;
+    }
+
+    &.icon {
+        font-size: 0;
+    }
+}

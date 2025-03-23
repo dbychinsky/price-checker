@@ -1,4 +1,4 @@
 # price-server
 
 ## Start server
-node server
+Для запуска локального сервера - node server
