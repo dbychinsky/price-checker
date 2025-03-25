@@ -1,6 +1,5 @@
-import { IProductView } from "../models/ProductView.ts";
+import { IProduct } from '../models/Product.ts';
 
-
-export function productExist(id: number, productList: IProductView[]): boolean {
-    return !!productList.find((product) => product.id === id);
+export function productExist(id: number, productList: IProduct[]): boolean {
+    return !!productList.find((product) => Number(product.id) === id);
 }

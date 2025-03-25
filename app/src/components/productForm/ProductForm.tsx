@@ -47,8 +47,7 @@ export const ProductForm = observer(() => {
 
     function addProductToList() {
         globalStore.setIsLoading(true);
-        const productUrlShort =
-            GetUrlToMarketplace.getShortUrlMarketplace(globalStore.productUrl);
+        const productUrlShort = GetUrlToMarketplace.getShortUrlMarketplace(globalStore.productUrl);
         const productId = Number(GetUrlToMarketplace.getUrl(productUrlShort));
         const productLinkToWb: IProductLink = {id: productId, url: productUrlShort}
 
@@ -73,7 +72,8 @@ export const ProductForm = observer(() => {
     function saveProduct(response: IProductResponse, productLinkToWb: IProductLink) {
         const productConvertedView = Serialize.responseToView(response);
         globalStore.addProductListView(productConvertedView);
-        console.log(productConvertedView)
+        service.saveProductToLocalStorage(Serialize.responseToView(response)).then();
+
         // setProductList([... productList, productConvertedView]);
         // service.saveProductToLocalStorage(Serialize.responseToStorage(response)).then();
         // service.saveLinkToLocalStorage(productLinkToWb).then();

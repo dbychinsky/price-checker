@@ -17,7 +17,17 @@ export const App = observer(() => {
                 <ProductForm/>
                 <div>
                     {globalStore.productListView.map(item => (
-                        <div key={item.id}>{item.id}</div>
+                        <>
+                            {item.id}
+                            {item.productName}
+                            <div key={item.id}>{item.priceList.map(item2 => (
+                                <div key={item.id}>
+                                    <div>{item2.priceProduct}</div>
+                                    <div>{item2.priceBasic}</div>
+                                    <div>{item2.priceTotal}</div>
+                                </div>))}
+                            </div>
+                        </>
                     ))}
                 </div>
             </div>

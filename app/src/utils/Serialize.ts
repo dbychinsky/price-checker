@@ -1,5 +1,6 @@
 import { IProductResponse } from "../models/ProductResponse.ts";
 import { IProduct, IProductPrice } from "../models/Product.ts";
+import { getProductPriceFraction } from './GetProductPriceFraction.ts';
 
 /**
  * Конвертация данных
@@ -7,7 +8,7 @@ import { IProduct, IProductPrice } from "../models/Product.ts";
 export class Serialize {
 
     // Конвертация данных ответа в данные для хранения в LS
-    // static responseToStorage(productResponse: IProductResponse): IProductStorage {
+    // static responseToStorage(productResponse: IProductResponse): IProduct {
     //     const price: IProductPrice[] = [];
     //
     //     productResponse.sizes.map((item) => {
@@ -20,22 +21,25 @@ export class Serialize {
     //
     //     return {
     //         id: productResponse.id,
-    //         price
+    //         productName: productResponse.name,
+    //         name,
+    //         origName,
+    //         dateAdded,
+    //         priceList,
     //     }
     // }
 
     static responseToView(productResponse: IProductResponse): IProduct {
         const target = productResponse.sizes[0];
-
         const name = target.name;
         const origName = target.origName;
         const priceList: IProductPrice[] = [];
         const dateAdded: Date = new Date();
 
         priceList.push({
-            priceBasic: target.price.basic.toString(),
-            priceTotal: target.price.total.toString(),
-            priceProduct: target.price.product.toString()
+            priceBasic: target.price ? getProductPriceFraction(target.price.basic.toString()) : null,
+            priceTotal: target.price ? getProductPriceFraction(target.price.total.toString()) : null,
+            priceProduct: target.price ? getProductPriceFraction(target.price.product.toString()) : null
         })
 
         return {
