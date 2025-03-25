@@ -33,7 +33,7 @@ export class Service {
      * @description  Сохранение продукта в список в LS.
      */
     async saveProductToLocalStorage(product: IProduct) {
-        let productList: IProduct[] = this.load(this.PRODUCT_LIST_KEY);
+        const productList: IProduct[] = this.load(this.PRODUCT_LIST_KEY);
 
         productList.push(product);
         this.save(this.PRODUCT_LIST_KEY, productList);

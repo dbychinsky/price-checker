@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { FakeButtons } from "./components/fakeButtons/FakeButtons.tsx";
 import { ProductForm } from "./components/productForm/ProductForm.tsx";
 import { Service } from "./service/Service.ts";
-import { globalStore } from "./store/globalStore.ts";
+import { ProductList } from './components/productList/ProductList.tsx';
 
 export const service = new Service();
 
@@ -15,21 +15,7 @@ export const App = observer(() => {
                 <FakeButtons/>
                 {/*<Header/>*/}
                 <ProductForm/>
-                <div>
-                    {globalStore.productListView.map(item => (
-                        <>
-                            {item.id}
-                            {item.productName}
-                            <div key={item.id}>{item.priceList.map(item2 => (
-                                <div key={item.id}>
-                                    <div>{item2.priceProduct}</div>
-                                    <div>{item2.priceBasic}</div>
-                                    <div>{item2.priceTotal}</div>
-                                </div>))}
-                            </div>
-                        </>
-                    ))}
-                </div>
+                <ProductList/>
             </div>
             <Footer/>
         </div>

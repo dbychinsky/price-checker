@@ -1,5 +1,5 @@
 import { IProductResponse } from "../models/ProductResponse.ts";
-import { IProduct, IProductPrice } from "../models/Product.ts";
+import { IProduct, IProductSize } from "../models/Product.ts";
 import { getProductPriceFraction } from './GetProductPriceFraction.ts';
 
 /**
@@ -30,25 +30,30 @@ export class Serialize {
     // }
 
     static responseToView(productResponse: IProductResponse): IProduct {
-        const target = productResponse.sizes[0];
-        const name = target.name;
-        const origName = target.origName;
-        const priceList: IProductPrice[] = [];
+        const size: IProductSize[] = [];
         const dateAdded: Date = new Date();
 
-        priceList.push({
-            priceBasic: target.price ? getProductPriceFraction(target.price.basic.toString()) : null,
-            priceTotal: target.price ? getProductPriceFraction(target.price.total.toString()) : null,
-            priceProduct: target.price ? getProductPriceFraction(target.price.product.toString()) : null
+        productResponse.sizes.map((item) => {
+            size.push({
+                nameSize: item.name,
+                origNameSize: item.origName,
+                priceList: [{
+                    priceTotal: item.price ? getProductPriceFraction(item.price.total.toString()) : null,
+                    priceBasic: item.price ? getProductPriceFraction(item.price.basic.toString()) : null,
+                    priceProduct: item.price ? getProductPriceFraction(item.price.product.toString()) : null
+                }]
+            });
         })
+        console.log(size);
+
 
         return {
             id: productResponse.id,
-            productName: productResponse.name,
-            name,
-            origName,
-            dateAdded,
-            priceList,
+            productInsideContent: [{
+                dateAdded,
+                productName: productResponse.name,
+                size
+            }]
         }
     }
 }

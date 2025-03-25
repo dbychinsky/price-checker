@@ -1,9 +1,17 @@
 export interface IProduct {
     id: number,
-    productName: string,
-    name: string,
-    origName: string,
+    productInsideContent: IProductInsideContent[],
+}
+
+export interface IProductInsideContent {
     dateAdded: Date,
+    productName: string,
+    size: IProductSize[],
+}
+
+export interface IProductSize {
+    nameSize: string,
+    origNameSize: string,
     priceList: IProductPrice[],
 }
 
@@ -12,4 +20,5 @@ export interface IProductPrice {
     priceBasic: string | null,
     priceProduct: string | null,
 }
+
 

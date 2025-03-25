@@ -71,9 +71,11 @@ export const ProductForm = observer(() => {
 
     function saveProduct(response: IProductResponse, productLinkToWb: IProductLink) {
         const productConvertedView = Serialize.responseToView(response);
+
         globalStore.addProductListView(productConvertedView);
         service.saveProductToLocalStorage(Serialize.responseToView(response)).then();
 
+        console.log(productConvertedView)
         // setProductList([... productList, productConvertedView]);
         // service.saveProductToLocalStorage(Serialize.responseToStorage(response)).then();
         // service.saveLinkToLocalStorage(productLinkToWb).then();
