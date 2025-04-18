@@ -5,6 +5,7 @@ import { FakeButtons } from "./components/fakeButtons/FakeButtons.tsx";
 import { ProductForm } from "./components/productForm/ProductForm.tsx";
 import { Service } from "./service/Service.ts";
 import { ProductList } from './components/productList/ProductList.tsx';
+// import { Header } from './components/header/Header.tsx';
 
 export const service = new Service();
 

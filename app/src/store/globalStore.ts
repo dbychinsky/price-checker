@@ -1,6 +1,7 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { currencyList, IProductCurrency } from "../models/Currency.ts";
 import { IProduct } from "../models/Product.ts";
+import { GetLocalStorageSizeInMB } from '../utils/getLocalStorageSizeInMB.ts';
 
 class GlobalStore {
     // Индикатор загрузки
@@ -15,8 +16,17 @@ class GlobalStore {
     // Отображаемый список продуктов
     productListView: IProduct[] = [];
 
+    // Заполненность LS
+    fullFilledLS = 0;
+
     constructor() {
         makeAutoObservable(this);
+        reaction(
+            () => this.productListView.length,
+            () => {
+                this.calcFullFilledLS(GetLocalStorageSizeInMB());
+            }
+        );
     }
 
     setProductUrl(url: string) {
@@ -32,10 +42,21 @@ class GlobalStore {
     }
 
     addProductListView(product: IProduct) {
-        this.productListView.push(product);
+        // Уведомляем MobX, что мы изменяем массив
+        runInAction(() => {
+            this.productListView.push(product);
+        });
     }
 
+    removeProductListView(product: IProduct) {
+        runInAction(() => {
+            this.productListView = this.productListView.filter(p => p !== product);
+        });
+    }
 
+    calcFullFilledLS(value: number) {
+        this.fullFilledLS = value;
+    }
 }
 
 export const globalStore = new GlobalStore();
