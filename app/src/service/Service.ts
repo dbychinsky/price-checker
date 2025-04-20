@@ -42,11 +42,29 @@ export class Service {
     /**
      * @description  Загрузка продукта из LS.
      */
-    async loadProductFromLocalStorage(): Promise<IProduct[]> {
+    loadProductFromLocalStorage(): IProduct[] {
         const productList: IProduct[] = this.load(this.PRODUCT_LIST_KEY);
 
-        return productList
+        // Преобразуем строки в Date объекты
+        productList.forEach(product => {
+            product.productInsideContent.forEach(desc => {
+                desc.dateAdded = new Date(desc.dateAdded);
+            });
+        });
+
+        return productList;
     }
+
+    /**
+     * @description Удаление продукта из списка и сохранение в LS.
+     */
+    async removeProductFromLocalStorage(productId: number) {
+        const productList = this.load(this.PRODUCT_LIST_KEY) as IProduct[];
+        const updatedList = productList.filter(p => p.id !== productId);
+
+        this.save(this.PRODUCT_LIST_KEY, updatedList);
+    }
+
 
     /**
      * Метод для работы с localStorage - сохранение данных

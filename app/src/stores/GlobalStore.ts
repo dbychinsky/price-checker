@@ -6,13 +6,23 @@ import { Service } from "../service/Service.ts";
 import { getLocalStorageSizeInMB } from "../utils/GetLocalStorageSizeInMB.ts";
 
 export class GlobalStore {
-    private service: Service;  // Сервис для работы с данными (API, LocalStorage)
+    // Сервис для работы с данными (API, LocalStorage)
+    private service: Service;
 
-    isLoading = false;         // Индикатор загрузки данных
-    productUrl = '';           // Адрес продукта для добавления
-    currency: IProductCurrency = currencyList[1];  // Текущая валюта
-    productListView: IProduct[] = [];  // Список продуктов для отображения
-    fullFilledLS = 0;          // Процент заполненности LocalStorage
+    // Индикатор загрузки данных
+    isLoading = false;
+
+    // Адрес продукта для добавления
+    productUrl = '';
+
+    // Текущая валюта
+    currency: IProductCurrency = currencyList[1];
+
+    // Список продуктов для отображения
+    productListView: IProduct[] = [];
+
+    // Процент заполненности LocalStorage
+    fullFilledLS = 0;
 
     // Конструктор принимает зависимость (service)
     constructor(service: Service) {
@@ -53,17 +63,20 @@ export class GlobalStore {
     // Загрузить продукты из LocalStorage через сервис
     async loadFromLocalStorage() {
         const products = await this.service.loadProductFromLocalStorage();  // Получаем данные из LocalStorage
+
         runInAction(() => {
             this.productListView = products;  // Обновляем список продуктов
         });
     }
 
     // Удалить продукт из списка
-    removeProductListView(product: IProduct) {
+    removeProduct(productId: number) {
         runInAction(() => {
-            this.productListView = this.productListView.filter(p => p !== product);  // Удаляем продукт
+            this.productListView = this.productListView.filter(p => p.id !== productId);
         });
+        this.service.removeProductFromLocalStorage(productId);
     }
+
 
     // Рассчитать заполненность LocalStorage
     calcFullFilledLS(value: number) {
