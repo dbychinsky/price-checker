@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite';
-import { globalStore } from '../../store/globalStore.ts';
+import { useStore } from '../../stores/StoreContext.ts';  // Импортируем хук для получения контекста
 
 export const ProductList = observer(() => {
+    const { globalStore } = useStore();  // Используем useStore для получения доступа к globalStore
 
     return (
         <div>

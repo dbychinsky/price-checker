@@ -1,6 +1,5 @@
-export const GetLocalStorageSizeInMB = (): number => {
+export const getLocalStorageSizeInMB = (): number => {
     let totalSize = 0;
-    debugger
     // Перебираем все элементы в localStorage и суммируем их размеры (ключ + значение)
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);

@@ -40,6 +40,15 @@ export class Service {
     }
 
     /**
+     * @description  Загрузка продукта из LS.
+     */
+    async loadProductFromLocalStorage(): Promise<IProduct[]> {
+        const productList: IProduct[] = this.load(this.PRODUCT_LIST_KEY);
+
+        return productList
+    }
+
+    /**
      * Метод для работы с localStorage - сохранение данных
      */
     private save(key: string, object: IProduct[] | IProductCurrency | IProductLink[]) {

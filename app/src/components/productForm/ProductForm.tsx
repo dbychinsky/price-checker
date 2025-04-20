@@ -1,19 +1,20 @@
 import './ProductForm.scss';
-import { globalStore } from "../../store/globalStore.ts";
 import { Button } from "../button/Button.tsx";
 import { GetUrlToMarketplace } from "../../utils/GetUrlToMarketplace.ts";
 import { IProductLink } from "../../models/ProductLink.ts";
 import { currencyList, IProductCurrency } from "../../models/Currency.ts";
 import { Select } from "../select/Select.tsx";
 import { observer } from "mobx-react-lite";
-import { service } from "../../App.tsx";
-import { productExist } from "../../utils/ProductExist.ts";
 import { toast } from "react-toastify";
 import { MessageList } from "../infoPanel/MessageList.ts";
 import { IProductResponse } from "../../models/ProductResponse.ts";
 import { Serialize } from "../../utils/Serialize.ts";
+import { productExist } from "../../utils/ProductExist.ts";
+import { useStore } from "../../stores/StoreContext.ts";
 
 export const ProductForm = observer(() => {
+    const {globalStore, service} = useStore();  // Используем useStore для получения доступа к globalStore и service
+
     return (
         <div className='productForm'>
             <div className={`top`}>
@@ -37,12 +38,12 @@ export const ProductForm = observer(() => {
     );
 
     function onChangeInput(value: string) {
-        globalStore.setProductUrl(value);
+        globalStore.setProductUrl(value);  // Обновляем URL продукта
     }
 
     function onChangeSelect(value: IProductCurrency) {
         if (!value) return; // Защита от ошибок
-        globalStore.setCurrency(value);
+        globalStore.setCurrency(value);  // Обновляем валюту
     }
 
     function addProductToList() {
@@ -58,27 +59,21 @@ export const ProductForm = observer(() => {
                         ? toast.error(MessageList.ERROR_PRODUCT_EXISTS)
                         : saveProduct(responseProduct, productLinkToWb))
                 .catch(() => toast.error(MessageList.ERROR_PRODUCT_ADD))
-                .finally(
-                    () => {
-                        globalStore.setProductUrl('')
-                        globalStore.setIsLoading(false)
-                    }
-                );
+                .finally(() => {
+                    globalStore.setProductUrl('');
+                    globalStore.setIsLoading(false);
+                });
         } else {
-            toast.error(MessageList.ERROR_EMPTY_URL)
+            toast.error(MessageList.ERROR_EMPTY_URL);
         }
     }
 
     function saveProduct(response: IProductResponse, productLinkToWb: IProductLink) {
-        const productConvertedView = Serialize.responseToView(response);
+        const productConvertedView = Serialize.responseToView(response);  // Преобразуем ответ
 
-        globalStore.addProductListView(productConvertedView);
-        service.saveProductToLocalStorage(Serialize.responseToView(response)).then();
-
-        console.log(productConvertedView)
-        // setProductList([... productList, productConvertedView]);
-        // service.saveProductToLocalStorage(Serialize.responseToStorage(response)).then();
-        // service.saveLinkToLocalStorage(productLinkToWb).then();
+        globalStore.addProductListView(productConvertedView);  // Добавляем продукт в список
+        service.saveProductToLocalStorage(productConvertedView).then();  // Сохраняем продукт в LocalStorage
+        console.log(productLinkToWb);
+        console.log(productConvertedView);
     }
-
 });
