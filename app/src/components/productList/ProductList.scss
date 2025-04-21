@@ -1,0 +1,16 @@
+.productList {
+    box-sizing: border-box;
+    padding: 10px;
+
+    .product {
+        box-sizing: border-box;
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: var(--color-white);
+        border-radius: 6px;
+    }
+
+    .productListVariation {
+        margin: 10px 0;
+    }
+}

@@ -77,6 +77,21 @@ export class GlobalStore {
         this.service.removeProductFromLocalStorage(productId);
     }
 
+    // Удалить из продукта item
+    // removeItemFromProduct(productId: number, origNameSize: string) {
+    //     const product = this.productListView.find((item) => item.id === productId);
+    //     const productListNew = product?.productInsideContent
+    //         .map((productInside) => productInside.size
+    //             .filter((sizeItem) => sizeItem.origNameSize !== origNameSize));
+    //
+    //     runInAction(() => {
+    //         this.productListView = this.productListView.filter(p => p.id !== productId);
+    //         if (productListNew) {
+    //             this.productListView.push(productListNew)
+    //         }
+    //     });
+    // }
+
 
     // Рассчитать заполненность LocalStorage
     calcFullFilledLS(value: number) {
