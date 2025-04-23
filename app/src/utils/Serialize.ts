@@ -1,5 +1,5 @@
 import { IProductResponse } from "../models/ProductResponse.ts";
-import { IProduct, IProductSize } from "../models/Product.ts";
+import { IProduct, ISize } from "../models/Product.ts";
 import { getProductPriceFraction } from './GetProductPriceFraction.ts';
 
 /**
@@ -30,7 +30,7 @@ export class Serialize {
     // }
 
     static responseToView(productResponse: IProductResponse): IProduct {
-        const size: IProductSize[] = [];
+        const size: ISize[] = [];
         const dateAdded: Date = new Date();
 
         productResponse.sizes.map((item) => {
@@ -43,17 +43,17 @@ export class Serialize {
                     priceProduct: item.price ? getProductPriceFraction(item.price.product.toString()) : null
                 }]
             });
-        })
-        console.log(size);
-
+        });
 
         return {
             id: productResponse.id,
-            productInsideContent: [{
-                dateAdded,
+            productInsideContent: {
                 productName: productResponse.name,
-                size
-            }]
+                productSize: [{
+                    size,
+                    dateAdded,
+                }]
+            }
         }
     }
 }

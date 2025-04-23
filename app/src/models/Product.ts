@@ -1,15 +1,20 @@
 export interface IProduct {
     id: number,
-    productInsideContent: IProductInsideContent[],
+    productInsideContent: IProductInsideContent,
 }
 
 export interface IProductInsideContent {
-    dateAdded: Date,
     productName: string,
-    size: IProductSize[],
+    productSize: IProductSize[],
 }
 
 export interface IProductSize {
+    dateAdded: Date,
+    size: ISize[],
+}
+
+
+export interface ISize {
     nameSize: string,
     origNameSize: string,
     priceList: IProductPrice[],

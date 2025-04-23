@@ -11,9 +11,13 @@ import { IProductResponse } from "../../models/ProductResponse.ts";
 import { Serialize } from "../../utils/Serialize.ts";
 import { productExist } from "../../utils/ProductExist.ts";
 import { useStore } from "../../stores/StoreContext.ts";
+import { IProduct, IProductPrice, ISize } from '../../models/Product.ts';
+import { toJS } from 'mobx';
+import mockData from '../../mocks/wb.json';
 
 export const ProductForm = observer(() => {
     const {globalStore, service} = useStore();  // Используем useStore для получения доступа к globalStore и service
+
 
     return (
         <div className='productForm'>
@@ -32,6 +36,11 @@ export const ProductForm = observer(() => {
             <Button
                 text={'Добавить в список'}
                 onClick={addProductToList}
+                variant={'primary'}
+            />
+            <Button
+                text={'checkChangePrice'}
+                onClick={checkChangePrice}
                 variant={'primary'}
             />
         </div>
@@ -70,10 +79,58 @@ export const ProductForm = observer(() => {
 
     function saveProduct(response: IProductResponse, productLinkToWb: IProductLink) {
         const productConvertedView = Serialize.responseToView(response);  // Преобразуем ответ
-
-        globalStore.addProductListView(productConvertedView);  // Добавляем продукт в список
+        globalStore.setProductListView(productConvertedView);  // Добавляем продукт в список
         service.saveProductToLocalStorage(productConvertedView).then();  // Сохраняем продукт в LocalStorage
-        console.log(productLinkToWb);
-        console.log(productConvertedView);
     }
+
+    function checkChangePrice() {
+        const productListView: IProduct[] = globalStore.productListView;
+
+        productListView.forEach((itemProduct) => {
+            service.getProductFromWB(itemProduct.id, globalStore.currency)
+                .then((response) => {
+                    const responseProduct: IProduct = Serialize.responseToView(response);
+
+
+                    // @ts-ignore
+                    // compareProductPrices(itemProduct, mockData[0]);
+                    compareProductPrices(itemProduct, responseProduct);
+                });
+        });
+    }
+
+    function compareProductPrices(itemProduct: IProduct, responseProduct: IProduct) {
+        const itemProductSize = itemProduct.productInsideContent.productSize;
+
+        const responseProductSize: ISize[] = responseProduct.productInsideContent.productSize[0].size;
+        const responsePriceList: IProductPrice[] = responseProduct.productInsideContent.productSize[0].size[0].priceList;
+        const responseNameSize: string = responseProduct.productInsideContent.productSize[0].size[0].nameSize;
+        const responseOrigNameSize: string = responseProduct.productInsideContent.productSize[0].size[0].origNameSize;
+        let priceListFinded: IProductPrice[] = [];
+
+        itemProductSize.map((item) => {
+            item.size.map((itemSize) => {
+                const nameSize = itemSize.nameSize;
+                const origNameSize = itemSize.origNameSize;
+
+                console.log(toJS(item), toJS(itemSize));
+                // if (nameSize !== '') {
+                //     priceListFinded = responseProductSize.find((itemResponseProductSize) => itemResponseProductSize.nameSize === nameSize)?.priceList || [];
+                // } else {
+                //     priceListFinded = responseProductSize.find((itemResponseProductSize) => itemResponseProductSize.origNameSize === origNameSize)?.priceList || [];
+                // }
+
+                if (nameSize !== '') {
+                     responseProductSize.find((itemResponseProductSize) => itemResponseProductSize.nameSize === nameSize);
+                } else {
+                    priceListFinded = responseProductSize.find((itemResponseProductSize) => itemResponseProductSize.origNameSize === origNameSize)?.priceList || [];
+                }
+
+                // console.log(priceListFinded);
+            });
+        });
+
+    }
+
+
 });

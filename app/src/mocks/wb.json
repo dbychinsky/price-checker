@@ -1,0 +1,94 @@
+[
+  {
+    "id": 257276855,
+    "productInsideContent": {
+      "productName": "Носки высокие набор",
+      "productSize": [
+        {
+          "size": [
+            {
+              "nameSize": "36-41.",
+              "origNameSize": "10 пар женские",
+              "priceList": [
+                {
+                  "priceTotal": "722,00",
+                  "priceBasic": "730,00",
+                  "priceProduct": "623,00"
+                }
+              ]
+            },
+            {
+              "nameSize": "41-47",
+              "origNameSize": "10 пар мужские",
+              "priceList": [
+                {
+                  "priceTotal": "722,00",
+                  "priceBasic": "730,00",
+                  "priceProduct": "623,00"
+                }
+              ]
+            },
+            {
+              "nameSize": "36-41",
+              "origNameSize": "5 пар женские",
+              "priceList": [
+                {
+                  "priceTotal": null,
+                  "priceBasic": null,
+                  "priceProduct": null
+                }
+              ]
+            },
+            {
+              "nameSize": "41-47.",
+              "origNameSize": "5 пар мужские",
+              "priceList": [
+                {
+                  "priceTotal": null,
+                  "priceBasic": null,
+                  "priceProduct": null
+                }
+              ]
+            },
+            {
+              "nameSize": "0",
+              "origNameSize": "БАРК",
+              "priceList": [
+                {
+                  "priceTotal": "729,00",
+                  "priceBasic": "730,00",
+                  "priceProduct": "623,00"
+                }
+              ]
+            }
+          ],
+          "dateAdded": "2025-04-22T08:34:39.286Z"
+        }
+      ]
+    }
+  },
+  {
+    "id": 75172610,
+    "productInsideContent": {
+      "productName": "Газовый резак универсальный Р3-300К",
+      "productSize": [
+        {
+          "size": [
+            {
+              "nameSize": "",
+              "origNameSize": "0",
+              "priceList": [
+                {
+                  "priceTotal": "3698,00",
+                  "priceBasic": "4514,00",
+                  "priceProduct": "3256,00"
+                }
+              ]
+            }
+          ],
+          "dateAdded": "2025-04-22T09:24:53.806Z"
+        }
+      ]
+    }
+  }
+]

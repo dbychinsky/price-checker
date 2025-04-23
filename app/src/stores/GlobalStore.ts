@@ -21,6 +21,9 @@ export class GlobalStore {
     // Список продуктов для отображения
     productListView: IProduct[] = [];
 
+    // Список актуальных продуктов с сервера для сравнения с тем что отображается
+    productListFromWb: IProduct[] = [];
+
     // Процент заполненности LocalStorage
     fullFilledLS = 0;
 
@@ -54,26 +57,27 @@ export class GlobalStore {
     }
 
     // Добавить продукт в отображаемый список
-    addProductListView(product: IProduct) {
-        runInAction(() => {
-            this.productListView.push(product);  // Добавляем продукт в массив
-        });
+    setProductListView(product: IProduct) {
+        this.productListView.push(product);  // Добавляем продукт в массив
+    }
+
+    // Добавить продукт в список актуальных продуктов
+    setProductListFromWb(product: IProduct) {
+        this.productListFromWb.push(product);  // Добавляем продукт в массив
     }
 
     // Загрузить продукты из LocalStorage через сервис
     async loadFromLocalStorage() {
-        const products = await this.service.loadProductFromLocalStorage();  // Получаем данные из LocalStorage
-
+        // Получаем данные из LocalStorage
+        const products = await this.service.loadProductFromLocalStorage();
         runInAction(() => {
-            this.productListView = products;  // Обновляем список продуктов
+            this.productListView = products;
         });
     }
 
     // Удалить продукт из списка
     removeProduct(productId: number) {
-        runInAction(() => {
-            this.productListView = this.productListView.filter(p => p.id !== productId);
-        });
+        this.productListView = this.productListView.filter(p => p.id !== productId);
         this.service.removeProductFromLocalStorage(productId);
     }
 

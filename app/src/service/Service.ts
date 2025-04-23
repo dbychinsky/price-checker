@@ -45,15 +45,19 @@ export class Service {
     loadProductFromLocalStorage(): IProduct[] {
         const productList: IProduct[] = this.load(this.PRODUCT_LIST_KEY);
 
-        // Преобразуем строки в Date объекты
         productList.forEach(product => {
-            product.productInsideContent.forEach(desc => {
-                desc.dateAdded = new Date(desc.dateAdded);
+            const content = product.productInsideContent;
+            content.productSize?.forEach(sizeEntry => {
+                if (sizeEntry.dateAdded) {
+                    sizeEntry.dateAdded = new Date(sizeEntry.dateAdded);
+                }
             });
         });
 
         return productList;
     }
+
+
 
     /**
      * @description Удаление продукта из списка и сохранение в LS.
