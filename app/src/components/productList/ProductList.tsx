@@ -25,8 +25,8 @@ export const ProductList = observer(() => {
                         {item.productInsideContent.productName}
                     </div>
                     <div>
-                        {item.productInsideContent.productSize.map((product) => (
-                            <div key={product.dateAdded.toDateString()}>
+                        {item.productInsideContent.productSize.map((product, index) => (
+                            <div key={index}>
                                 <div>{DateUtils.formatToISO(product.dateAdded)}</div>
                                 <div>{product.size.map((itemSize) => (
                                     <div key={itemSize.nameSize}>

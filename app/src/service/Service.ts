@@ -58,7 +58,6 @@ export class Service {
     }
 
 
-
     /**
      * @description Удаление продукта из списка и сохранение в LS.
      */
@@ -69,6 +68,19 @@ export class Service {
         this.save(this.PRODUCT_LIST_KEY, updatedList);
     }
 
+    /**
+     * @description Обновляет продукт в localStorage (удаляет старый и сохраняет новый)
+     */
+    updateProductInLocalStorage(updatedProduct: IProduct) {
+        const productList: IProduct[] = this.load(this.PRODUCT_LIST_KEY);
+
+        const updatedList = productList.map(product =>
+            product.id === updatedProduct.id ? updatedProduct : product
+        );
+
+        this.save(this.PRODUCT_LIST_KEY, updatedList); // используем уже существующий метод save
+    }
+
 
     /**
      * Метод для работы с localStorage - сохранение данных
@@ -76,6 +88,7 @@ export class Service {
     private save(key: string, object: IProduct[] | IProductCurrency | IProductLink[]) {
         localStorage.setItem(key, JSON.stringify(object));
     }
+
 
     /**
      * Метод для работы с localStorage - загрузка данных

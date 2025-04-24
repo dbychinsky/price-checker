@@ -1,7 +1,7 @@
 // stores/GlobalStore.ts
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { currencyList, IProductCurrency } from "../models/Currency.ts";
-import { IProduct } from "../models/Product.ts";
+import { IProduct, ISize } from "../models/Product.ts";
 import { Service } from "../service/Service.ts";
 import { getLocalStorageSizeInMB } from "../utils/GetLocalStorageSizeInMB.ts";
 
@@ -80,6 +80,26 @@ export class GlobalStore {
         this.productListView = this.productListView.filter(p => p.id !== productId);
         this.service.removeProductFromLocalStorage(productId);
     }
+
+    updateProductSizeHistory(productId: number, newSizeData: { size: ISize[], dateAdded: Date }) {
+        const product = this.productListView.find(p => p.id === productId);
+        if (!product) return;
+
+        if (!product.productInsideContent.productSize) {
+            product.productInsideContent.productSize = [];
+        }
+
+        product.productInsideContent.productSize.push(newSizeData);
+
+        // Ограничиваем до 3 последних записей
+        if (product.productInsideContent.productSize.length > 3) {
+            product.productInsideContent.productSize = product.productInsideContent.productSize.slice(-5);
+        }
+
+        // Сохраняем обновлённый продукт в localStorage
+        this.service.updateProductInLocalStorage(product);
+    }
+
 
     // Удалить из продукта item
     // removeItemFromProduct(productId: number, origNameSize: string) {

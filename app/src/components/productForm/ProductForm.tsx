@@ -11,13 +11,22 @@ import { IProductResponse } from "../../models/ProductResponse.ts";
 import { Serialize } from "../../utils/Serialize.ts";
 import { productExist } from "../../utils/ProductExist.ts";
 import { useStore } from "../../stores/StoreContext.ts";
-import { IProduct, IProductPrice, ISize } from '../../models/Product.ts';
-import { toJS } from 'mobx';
+import { IProduct } from '../../models/Product.ts';
+import { useEffect } from 'react';
 import mockData from '../../mocks/wb.json';
+import { toJS } from 'mobx';
 
 export const ProductForm = observer(() => {
-    const {globalStore, service} = useStore();  // Используем useStore для получения доступа к globalStore и service
+    const {globalStore, service} = useStore();
 
+    // При монтировании компонента загружаем продукты и проверяем изменение цен
+    useEffect(() => {
+        globalStore.loadFromLocalStorage().then(() => {
+            if (globalStore.productListView.length > 0) {
+                checkChangePrice();
+            }
+        });
+    }, []);
 
     return (
         <div className='productForm'>
@@ -38,28 +47,26 @@ export const ProductForm = observer(() => {
                 onClick={addProductToList}
                 variant={'primary'}
             />
-            <Button
-                text={'checkChangePrice'}
-                onClick={checkChangePrice}
-                variant={'primary'}
-            />
         </div>
     );
 
+    // Обработка изменения URL продукта
     function onChangeInput(value: string) {
-        globalStore.setProductUrl(value);  // Обновляем URL продукта
+        globalStore.setProductUrl(value);
     }
 
+    // Обработка изменения валюты
     function onChangeSelect(value: IProductCurrency) {
-        if (!value) return; // Защита от ошибок
-        globalStore.setCurrency(value);  // Обновляем валюту
+        if (!value) return;
+        globalStore.setCurrency(value);
     }
 
+    // Добавление продукта в список
     function addProductToList() {
         globalStore.setIsLoading(true);
         const productUrlShort = GetUrlToMarketplace.getShortUrlMarketplace(globalStore.productUrl);
         const productId = Number(GetUrlToMarketplace.getUrl(productUrlShort));
-        const productLinkToWb: IProductLink = {id: productId, url: productUrlShort}
+        const productLinkToWb: IProductLink = {id: productId, url: productUrlShort};
 
         if (productUrlShort !== '') {
             service.getProductFromWB(productId, globalStore.currency)
@@ -77,60 +84,45 @@ export const ProductForm = observer(() => {
         }
     }
 
+    // Сохранение нового продукта в список и LocalStorage
     function saveProduct(response: IProductResponse, productLinkToWb: IProductLink) {
-        const productConvertedView = Serialize.responseToView(response);  // Преобразуем ответ
-        globalStore.setProductListView(productConvertedView);  // Добавляем продукт в список
-        service.saveProductToLocalStorage(productConvertedView).then();  // Сохраняем продукт в LocalStorage
+        const productConvertedView = Serialize.responseToView(response);
+        globalStore.setProductListView(productConvertedView);
+        service.saveProductToLocalStorage(productConvertedView).then();
     }
 
+    // Проверка изменения цены для каждого продукта
     function checkChangePrice() {
         const productListView: IProduct[] = globalStore.productListView;
 
-        productListView.forEach((itemProduct) => {
-            service.getProductFromWB(itemProduct.id, globalStore.currency)
-                .then((response) => {
-                    const responseProduct: IProduct = Serialize.responseToView(response);
-
-
-                    // @ts-ignore
-                    // compareProductPrices(itemProduct, mockData[0]);
-                    compareProductPrices(itemProduct, responseProduct);
-                });
+        productListView.forEach((itemProduct, index) => {
+            const mockProduct = mockData[index] as unknown as IProduct;
+            compareProductPrices(itemProduct, mockProduct);
         });
+
+        // productListView.forEach((itemProduct) => {
+        //     service.getProductFromWB(itemProduct.id, globalStore.currency)
+        //         .then((response) => {
+        //             const responseProduct: IProduct = Serialize.responseToView(response);
+        //             compareProductPrices(itemProduct, responseProduct);
+        //         });
+        // });
     }
 
+    // Сравнение цен старого и нового продукта, обновление истории если цена изменилась
     function compareProductPrices(itemProduct: IProduct, responseProduct: IProduct) {
-        const itemProductSize = itemProduct.productInsideContent.productSize;
+        const sizes = itemProduct.productInsideContent.productSize;
+        const oldPrice = sizes?.[sizes.length - 1]?.size?.[0]?.priceList?.[0]?.priceTotal;
+        const newPrice = responseProduct.productInsideContent.productSize?.[0]?.size?.[0]?.priceList?.[0]?.priceTotal;
+        console.log(toJS(itemProduct), toJS(responseProduct))
+        if (oldPrice !== newPrice) {
+            const newSizeData = {
+                size: responseProduct.productInsideContent.productSize[0].size,
+                dateAdded: new Date(),
+            };
 
-        const responseProductSize: ISize[] = responseProduct.productInsideContent.productSize[0].size;
-        const responsePriceList: IProductPrice[] = responseProduct.productInsideContent.productSize[0].size[0].priceList;
-        const responseNameSize: string = responseProduct.productInsideContent.productSize[0].size[0].nameSize;
-        const responseOrigNameSize: string = responseProduct.productInsideContent.productSize[0].size[0].origNameSize;
-        let priceListFinded: IProductPrice[] = [];
-
-        itemProductSize.map((item) => {
-            item.size.map((itemSize) => {
-                const nameSize = itemSize.nameSize;
-                const origNameSize = itemSize.origNameSize;
-
-                console.log(toJS(item), toJS(itemSize));
-                // if (nameSize !== '') {
-                //     priceListFinded = responseProductSize.find((itemResponseProductSize) => itemResponseProductSize.nameSize === nameSize)?.priceList || [];
-                // } else {
-                //     priceListFinded = responseProductSize.find((itemResponseProductSize) => itemResponseProductSize.origNameSize === origNameSize)?.priceList || [];
-                // }
-
-                if (nameSize !== '') {
-                     responseProductSize.find((itemResponseProductSize) => itemResponseProductSize.nameSize === nameSize);
-                } else {
-                    priceListFinded = responseProductSize.find((itemResponseProductSize) => itemResponseProductSize.origNameSize === origNameSize)?.priceList || [];
-                }
-
-                // console.log(priceListFinded);
-            });
-        });
-
+            // Обновление истории productSize в сторе при изменении цены
+            globalStore.updateProductSizeHistory(itemProduct.id, newSizeData);
+        }
     }
-
-
 });
