@@ -1,7 +1,7 @@
-import { IProductCurrency } from "../models/Currency.ts";
-import { IProductResponse } from "../models/ProductResponse.ts";
-import { IProduct } from '../models/Product.ts';
-import { IProductLink } from '../models/ProductLink.ts';
+import {IProductCurrency} from "../models/Currency.ts";
+import {IProductResponse} from "../models/ProductResponse.ts";
+import {IProduct} from '../models/Product.ts';
+import {IProductLink} from '../models/ProductLink.ts';
 
 const apiUrl = import.meta.env.VITE_SERVER_URL;
 
