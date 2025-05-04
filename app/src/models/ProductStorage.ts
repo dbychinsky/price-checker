@@ -1,4 +1,4 @@
-import { IProductPrice } from "./ProductView.ts";
+// import { IProductPrice } from "./ProductView.ts";
 
 // export interface IProductStorage {
 //     id: number,

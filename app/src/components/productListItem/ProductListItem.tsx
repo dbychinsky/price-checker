@@ -1,11 +1,11 @@
 import './ProductListItem.scss';
-import { observer } from 'mobx-react-lite';
-import { Button } from '../button/Button.tsx';
-import DateUtils from '../../utils/DateUtils.ts';
-import { IProduct } from '../../models/Product.ts';
-import { useStore } from '../../stores/StoreContext.ts';
-import { useState } from 'react';
-import * as React from 'react';
+import {observer} from 'mobx-react-lite';
+import {Button} from '../button/Button.tsx';
+import {IProduct} from '../../models/Product.ts';
+import {useStore} from '../../stores/StoreContext.ts';
+import {useState} from 'react';
+import {CopyButton} from "../copyButton/CopyButton.tsx";
+import ProductSizeOnDate from './productSizeOnDate/ProductSizeOnDate.tsx';
 
 interface ProductListItemProps {
     product: IProduct;
@@ -21,38 +21,21 @@ const ProductListItem = observer((props: ProductListItemProps) => {
     };
 
     return (
-        <div key={product.id} className={`productListItem ${isHideContent ? 'isHideContent' : ''}`}
+        <div className={`product-list-item ${isHideContent ? 'is-hide-content' : ''}`}
              onClick={handleClick}>
-            <div className='mainInfo'>
-                <div className='productName'>
+            <div className='main-info'>
+                <div className='product-name'>
                     {product.productInsideContent.productName}
                 </div>
-                <Button text={product.id.toString()}
-                        onClick={(e) => handleCopy(product.id, e)}
-                        className={'article copy'}
-                        variant={'iconText'}/>
+                <CopyButton textToCopy={product.id.toString()}
+                            className={'article'}/>
             </div>
-            <div className='priceList'>
+            <div className='price-list'>
                 {product.productInsideContent.productSize.map((product, index) => (
-                    <div key={index} className='productSizeOnDate'>
-                        <div>{DateUtils.formatToISO(product.dateAdded)}</div>
-                        {product.size.map((itemSize) => (
-                            <div key={itemSize.nameSize} className='productForeignInfo'>
-                                <div className='nameSize'>{itemSize.nameSize}</div>
-                                <div className='origNameSize'>{itemSize.origNameSize}</div>
-                                <div>
-                                    {itemSize.priceList.map((itemPrice, index) => (
-                                        <div key={index} className='priceTotal'>
-                                            {itemPrice.priceTotal}
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+                    <ProductSizeOnDate product={product} key={index}/>
                 ))}
             </div>
-            <div className='productListButtons'>
+            <div className='product-list-buttons'>
                 <Button text={'Удалить'}
                         onClick={() => globalStore.removeProduct(product.id)}
                         variant={'secondary'}/>
@@ -62,11 +45,6 @@ const ProductListItem = observer((props: ProductListItemProps) => {
             </div>
         </div>
     );
-
-    function handleCopy(id: number, e: React.MouseEvent) {
-        e.stopPropagation();
-        navigator.clipboard.writeText(id.toString()).then();
-    };
 });
 
 export default ProductListItem;

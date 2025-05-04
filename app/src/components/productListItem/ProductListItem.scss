@@ -1,22 +1,22 @@
-.productListItem {
+.product-list-item {
     box-sizing: border-box;
     margin-bottom: 10px;
     padding: 10px;
     background-color: var(--color-white);
     border-radius: 6px;
 
-    &.isHideContent {
-        .priceList, .productListButtons {
+    &.is-hide-content {
+        .price-list, .product-list-buttons {
             display: none;
         }
     }
 
-    .mainInfo {
+    .main-info {
         display: flex;
         flex-flow: row nowrap;
         align-items: baseline;
 
-        .productName {
+        .product-name {
             font-size: 1.2rem;
             width: 68%;
         }
@@ -30,7 +30,7 @@
         }
     }
 
-    .priceList {
+    .price-list {
         display: flex;
         flex-flow: column nowrap;
         margin-top: 0.8rem;
@@ -38,36 +38,15 @@
         &:empty {
             padding: 0;
         }
-
-        .productSizeOnDate {
-            margin-bottom: 0.8rem;
-
-            .productForeignInfo {
-                display: flex;
-                flex-flow: row nowrap;
-
-                .nameSize {
-                    width: 20%;
-                    padding-right: 4px;
-                }
-
-                .origNameSize {
-                    width: 40%;
-                    padding-right: 4px;
-                }
-
-                .priceTotal {
-                    width: 40%;
-                }
-            }
-        }
     }
 
-    .productListButtons {
+    .product-list-buttons {
         position: relative;
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-around;
+        gap: 10px;
+        margin-top: 10px;
 
         .button {
             width: 50%;

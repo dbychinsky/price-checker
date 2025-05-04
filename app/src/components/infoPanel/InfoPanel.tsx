@@ -15,7 +15,7 @@ interface InfoPanelProps {
 
 export const InfoPanel = (props: InfoPanelProps) => {
     const {type, text} = props;
-    const wrapperClass = clsx([type], 'infoPanel')
+    const wrapperClass = clsx([type], 'info-panel')
 
     return (
         <div className={wrapperClass}>

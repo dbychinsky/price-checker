@@ -1,7 +1,7 @@
 import './ProductList.scss';
-import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
-import { useStore } from '../../stores/StoreContext.ts';
+import {observer} from 'mobx-react-lite';
+import {useEffect} from 'react';
+import {useStore} from '../../stores/StoreContext.ts';
 import ProductListItem from '../productListItem/ProductListItem.tsx';
 
 export const ProductList = observer(() => {
@@ -14,9 +14,9 @@ export const ProductList = observer(() => {
     }, []);
 
     return (
-        <div className='productList'>
+        <div className='product-list'>
             {globalStore.productListView.map(product => (
-                <ProductListItem product={product}/>
+                <ProductListItem key={product.id} product={product}/>
             ))}
         </div>
     );

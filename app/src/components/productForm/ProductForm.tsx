@@ -29,7 +29,7 @@ export const ProductForm = observer(() => {
     }, []);
 
     return (
-        <div className='productForm'>
+        <div className='product-form'>
             <div className={`top`}>
                 <label>Укажите ссылку на товар</label>
                 <Select

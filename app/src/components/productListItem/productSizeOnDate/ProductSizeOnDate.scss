@@ -1,0 +1,22 @@
+.product-size-on-date {
+    margin-bottom: 0.8rem;
+
+    .product-foreign-info {
+        display: flex;
+        flex-flow: row nowrap;
+
+        .name-size {
+            width: 20%;
+            padding-right: 4px;
+        }
+
+        .orig-name-size {
+            width: 40%;
+            padding-right: 4px;
+        }
+
+        .price-total {
+            width: 40%;
+        }
+    }
+}
