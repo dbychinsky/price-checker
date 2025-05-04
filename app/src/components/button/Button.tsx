@@ -17,7 +17,8 @@ interface ButtonProps {
 const ButtonsTypeMapping = {
     primary: 'primary',
     secondary: 'secondary',
-    icon: 'icon'
+    icon: 'icon',
+    iconText: 'iconText'
 };
 
 type ButtonsType = keyof typeof ButtonsTypeMapping;

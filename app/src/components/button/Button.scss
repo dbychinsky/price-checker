@@ -1,7 +1,10 @@
+$background-image: 'src/assets/img/copy.svg';
+
 .button {
     box-sizing: border-box;
     border: none;
     cursor: pointer;
+    position: relative;
 
     &.primary {
         color: var(--color-white);
@@ -10,7 +13,45 @@
         height: 36px;
     }
 
+    &.secondary {
+        background: none;
+        border: 1px solid var(--color-grey);
+        border-radius: 6px;
+        height: 36px;
+        color: var(--color-grey-dark);
+    }
+
     &.icon {
         font-size: 0;
+    }
+
+    &.iconText {
+        padding: 0;
+
+        &.copy {
+            background: none;
+
+            &::before {
+                position: absolute;
+                right: 0;
+                top: 2px;
+                content: '';
+                display: block;
+                height: 20px;
+                width: 20px;
+                background-color: currentColor; // Цвет можно менять через `color`
+                mask-image: url($background-image);
+                -webkit-mask-image: url($background-image); // Для Safari
+                mask-size: contain;
+                -webkit-mask-size: contain;
+                mask-repeat: no-repeat;
+                -webkit-mask-repeat: no-repeat;
+                mask-position: center;
+                -webkit-mask-position: center;
+            }
+
+            //background: url('src/assets/img/copy.svg') center right no-repeat;
+            //background-size: 20px;
+        }
     }
 }

@@ -6,6 +6,7 @@ import { ProductForm } from "./components/productForm/ProductForm.tsx";
 import { ProductList } from './components/productList/ProductList.tsx';
 import { StoreContext } from './stores/StoreContext.ts';
 import { rootStore } from "./stores/RootStore.ts";
+import { Header } from './components/header/Header.tsx';
 // Импортируем контекст и инстанс RootStore
 
 export const App = observer(() => {
@@ -13,12 +14,12 @@ export const App = observer(() => {
         <StoreContext.Provider value={rootStore}>  {/* Оборачиваем в Provider */}
             <div className='app'>
                 <div className='wrapper'>
-                    <FakeButtons />
-                    {/*<Header />*/}
-                    <ProductForm />
-                    <ProductList />
+                    <FakeButtons/>
+                    <Header/>
+                    <ProductForm/>
+                    <ProductList/>
                 </div>
-                <Footer />
+                <Footer/>
             </div>
         </StoreContext.Provider>
     );

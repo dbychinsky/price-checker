@@ -67,7 +67,6 @@ export const ProductForm = observer(() => {
         const productUrlShort = GetUrlToMarketplace.getShortUrlMarketplace(globalStore.productUrl);
         const productId = Number(GetUrlToMarketplace.getUrl(productUrlShort));
         const productLinkToWb: IProductLink = {id: productId, url: productUrlShort};
-
         if (productUrlShort !== '') {
             service.getProductFromWB(productId, globalStore.currency)
                 .then(responseProduct =>
