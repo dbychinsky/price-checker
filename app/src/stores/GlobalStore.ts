@@ -1,9 +1,9 @@
 // stores/GlobalStore.ts
-import { makeAutoObservable, reaction, runInAction } from "mobx";
-import { currencyList, IProductCurrency } from "../models/Currency.ts";
-import { IProduct, ISize } from "../models/Product.ts";
-import { Service } from "../service/Service.ts";
-import { getLocalStorageSizeInMB } from "../utils/GetLocalStorageSizeInMB.ts";
+import {makeAutoObservable, reaction, runInAction} from "mobx";
+import {IProductCurrency} from "../models/Currency.ts";
+import {IProduct, ISize} from "../models/Product.ts";
+import {Service} from "../service/Service.ts";
+import {getLocalStorageSizeInMB} from "../utils/GetLocalStorageSizeInMB.ts";
 
 export class GlobalStore {
     // Сервис для работы с данными (API, LocalStorage)
@@ -16,7 +16,7 @@ export class GlobalStore {
     productUrl = '';
 
     // Текущая валюта
-    currency: IProductCurrency = currencyList[1];
+    currency: IProductCurrency;
 
     // Список продуктов для отображения
     productListView: IProduct[] = [];
@@ -30,6 +30,8 @@ export class GlobalStore {
     // Конструктор принимает зависимость (service)
     constructor(service: Service) {
         this.service = service;  // Инициализируем сервис
+        this.currency = service.loadCurrentCurrencyToLocalStorage();
+
         makeAutoObservable(this); // Делает все свойства и методы автоматически наблюдаемыми для MobX
 
         // Реакция на изменение длины списка продуктов
@@ -38,6 +40,10 @@ export class GlobalStore {
             () => {
                 this.calcFullFilledLS(getLocalStorageSizeInMB());  // Пересчитываем заполненность LocalStorage
             }
+        );
+        reaction(
+            () => this.currency,
+            (currency) => this.service.saveCurrentCurrencyToLocalStorage(currency)
         );
     }
 
