@@ -1,12 +1,6 @@
 import './InfoPanel.scss';
-import {clsx} from 'clsx';
-
-export enum InfoPanelList {
-    informationStatic = 'informationStatic',
-    information = 'information',
-    success = 'success',
-    error = 'error',
-}
+import { clsx } from 'clsx';
+import { InfoPanelList } from './InfoPanelList.ts';
 
 interface InfoPanelProps {
     text: string;

@@ -1,9 +1,9 @@
 // stores/GlobalStore.ts
-import {makeAutoObservable, reaction, runInAction} from "mobx";
-import {IProductCurrency} from "../models/Currency.ts";
-import {IProduct, ISize} from "../models/Product.ts";
-import {Service} from "../service/Service.ts";
-import {getLocalStorageSizeInMB} from "../utils/GetLocalStorageSizeInMB.ts";
+import { makeAutoObservable, reaction, runInAction } from "mobx";
+import { IProductCurrency } from "../models/Currency.ts";
+import { IProduct, ISize } from "../models/Product.ts";
+import { Service } from "../service/Service.ts";
+import { getLocalStorageSizeInMB } from "../utils/GetLocalStorageSizeInMB.ts";
 
 export class GlobalStore {
     // Сервис для работы с данными (API, LocalStorage)
@@ -48,46 +48,49 @@ export class GlobalStore {
     }
 
     // Установить URL продукта
-    setProductUrl(url: string) {
+    setProductUrl = (url: string) => {
         this.productUrl = url;
-    }
+    };
 
     // Установить состояние загрузки
-    setIsLoading(loading: boolean) {
+    setIsLoading = (loading: boolean) => {
         this.isLoading = loading;
-    }
+    };
 
     // Установить валюту продукта
-    setCurrency(currency: IProductCurrency) {
+    setCurrency = (currency: IProductCurrency) => {
         this.currency = currency;
-    }
+    };
 
     // Добавить продукт в отображаемый список
-    setProductListView(product: IProduct) {
+    setProductListView = (product: IProduct) => {
         this.productListView.push(product);  // Добавляем продукт в массив
-    }
+    };
+
 
     // Добавить продукт в список актуальных продуктов
-    setProductListFromWb(product: IProduct) {
+    setProductListFromWb = (product: IProduct) => {
         this.productListFromWb.push(product);  // Добавляем продукт в массив
-    }
+    };
 
     // Загрузить продукты из LocalStorage через сервис
-    async loadFromLocalStorage() {
-        // Получаем данные из LocalStorage
+    loadFromLocalStorage = async () => {
         const products = await this.service.loadProductFromLocalStorage();
         runInAction(() => {
             this.productListView = products;
         });
-    }
+    };
 
     // Удалить продукт из списка
-    removeProduct(productId: number) {
+    removeProduct = (productId: number) => {
         this.productListView = this.productListView.filter(p => p.id !== productId);
         this.service.removeProductFromLocalStorage(productId);
-    }
+    };
 
-    updateProductSizeHistory(productId: number, newSizeData: { size: ISize[], dateAdded: Date }) {
+    updateProductSizeHistory = (
+        productId: number,
+        newSizeData: { size: ISize[]; dateAdded: Date }
+    ) => {
         const product = this.productListView.find(p => p.id === productId);
         if (!product) return;
 
@@ -97,14 +100,13 @@ export class GlobalStore {
 
         product.productInsideContent.productSize.push(newSizeData);
 
-        // Ограничиваем до 3 последних записей
+        // Ограничиваем до 3 последних записей (в коде было -5, поправлено на -3)
         if (product.productInsideContent.productSize.length > 3) {
-            product.productInsideContent.productSize = product.productInsideContent.productSize.slice(-5);
+            product.productInsideContent.productSize = product.productInsideContent.productSize.slice(-3);
         }
 
-        // Сохраняем обновлённый продукт в localStorage
         this.service.updateProductInLocalStorage(product);
-    }
+    };
 
 
     // Удалить из продукта item
@@ -122,9 +124,8 @@ export class GlobalStore {
     //     });
     // }
 
-
     // Рассчитать заполненность LocalStorage
-    calcFullFilledLS(value: number) {
+    calcFullFilledLS = (value: number) => {
         this.fullFilledLS = value;  // Обновляем процент заполненности
     }
 }

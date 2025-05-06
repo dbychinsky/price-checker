@@ -5,6 +5,10 @@
     background-color: var(--color-white);
     border-radius: 6px;
 
+    &:hover {
+        cursor: pointer;
+    }
+
     &.is-hide-content {
         .price-list, .product-list-buttons {
             display: none;
