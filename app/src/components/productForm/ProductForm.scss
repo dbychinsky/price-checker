@@ -18,14 +18,14 @@
         display: flex;
         flex-flow: row nowrap;
         justify-content: space-between;
-        align-items: end;
+        align-items: start;
         gap: 2%;
 
         .input-wrapper {
             width: 74%;
         }
 
-        .select {
+        .select-wrapper {
             width: 24%;
         }
     }
