@@ -25,9 +25,10 @@ export class GetUrlToMarketplace {
     //Глобальный сайт
     private static getUrlMarketplaceGlobal(url: string): string {
         // https://global.wildberries.ru/product/noski-korotkie-nabor-216617294?option=345257859
+        //https://global.wildberries.ru/product?card=110592443'
+        // https://global.wildberries.ru/catalog/172658116/detail.aspx
 
         let result: string | undefined;
-
         if (url.includes('?')) {
             if (url.includes('card')) {
                 //https://global.wildberries.ru/product?card=110592443'
@@ -36,7 +37,13 @@ export class GetUrlToMarketplace {
                 result = url.split('?')[0].split("-").pop();
             }
         } else {
-            result = url.split("-").pop();
+            if (url.includes('catalog')) {
+                const resultMiddle = url.split('?')[0].split('/').filter(Boolean);
+                const id = resultMiddle[resultMiddle.indexOf('catalog') + 1];
+                result = id;
+            } else {
+                result = url.split("-").pop();
+            }
         }
 
         return result ? result : '';
@@ -58,3 +65,4 @@ export class GetUrlToMarketplace {
         return url.slice(lastIndex + 1);
     }
 }
+

@@ -3,20 +3,33 @@
 
     .product-foreign-info {
         display: flex;
-        flex-flow: row nowrap;
+        flex-flow: row wrap;
+        margin-bottom: 10px;
 
         .name-size {
-            width: 20%;
+            box-sizing: border-box;
+            width: 40%;
             padding-right: 4px;
         }
 
         .orig-name-size {
-            width: 40%;
+            box-sizing: border-box;
+            width: 60%;
             padding-right: 4px;
         }
 
         .price-total {
-            width: 40%;
+            width: 100%;
+            display: flex;
+            flex-flow: row nowrap;
+        }
+
+        .price-total-item {
+            display: flex;
+            width: 30%;
+            &:nth-child(2){
+                margin: 0 1.5%;
+            }
         }
     }
 }

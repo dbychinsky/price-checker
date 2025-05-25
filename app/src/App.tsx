@@ -14,7 +14,7 @@ export const App = observer(() => {
         <StoreContext.Provider value={rootStore}>  {/* Оборачиваем в Provider */}
             <div className='app'>
                 <div className='wrapper'>
-                    {/*<FakeButtons/>*/}
+                    <FakeButtons/>
                     <Header/>
                     <ProductForm/>
                     <ProductList/>

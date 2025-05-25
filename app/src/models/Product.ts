@@ -9,7 +9,6 @@ export interface IProductInsideContent {
 }
 
 export interface IProductSize {
-    dateAdded: Date,
     size: ISize[],
 }
 
@@ -24,6 +23,7 @@ export interface IProductPrice {
     priceTotal: string | null,
     priceBasic: string | null,
     priceProduct: string | null,
+    dateAdded: Date,
 }
 
 

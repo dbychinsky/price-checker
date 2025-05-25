@@ -1,9 +1,9 @@
 // stores/GlobalStore.ts
-import { makeAutoObservable, reaction, runInAction } from "mobx";
-import { IProductCurrency } from "../models/Currency.ts";
-import { IProduct, ISize } from "../models/Product.ts";
-import { Service } from "../service/Service.ts";
-import { getLocalStorageSizeInMB } from "../utils/GetLocalStorageSizeInMB.ts";
+import {makeAutoObservable, reaction, runInAction} from "mobx";
+import {IProductCurrency} from "../models/Currency.ts";
+import {IProduct, ISize} from "../models/Product.ts";
+import {Service} from "../service/Service.ts";
+import {getLocalStorageSizeInMB} from "../utils/GetLocalStorageSizeInMB.ts";
 
 export class GlobalStore {
     // Сервис для работы с данными (API, LocalStorage)
@@ -89,21 +89,51 @@ export class GlobalStore {
 
     updateProductSizeHistory = (
         productId: number,
-        newSizeData: { size: ISize[]; dateAdded: Date }
+        newSizeData: ISize[],
     ) => {
         const product = this.productListView.find(p => p.id === productId);
         if (!product) return;
 
-        if (!product.productInsideContent.productSize) {
-            product.productInsideContent.productSize = [];
+        const productSizes = product.productInsideContent.productSize;
+
+        if (productSizes.length === 0) {
+            productSizes.push({size: newSizeData});
+        } else {
+            const lastSizeEntry = productSizes[productSizes.length - 1];
+
+            newSizeData.forEach(newSizeItem => {
+                const existingSize = lastSizeEntry.size.find(
+                    s =>
+                        s.nameSize === newSizeItem.nameSize &&
+                        s.origNameSize === newSizeItem.origNameSize
+                );
+
+                if (!existingSize) {
+                    // Добавляем новый размер с обрезанным списком цен (последние 3)
+                    lastSizeEntry.size.push({
+                        ...newSizeItem,
+                        priceList: newSizeItem.priceList.slice(-3),
+                    });
+                } else {
+                    newSizeItem.priceList.forEach(newPrice => {
+                        const exists = existingSize.priceList.some(
+                            p => JSON.stringify(p) === JSON.stringify(newPrice)
+                        );
+
+                        if (!exists) {
+                            existingSize.priceList.push(newPrice);
+
+                            // Сортируем по дате и сохраняем только последние 3
+                            existingSize.priceList = existingSize.priceList
+                                .sort((a, b) => new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime())
+                                .slice(-3);
+                        }
+                    });
+                }
+            });
         }
 
-        product.productInsideContent.productSize.push(newSizeData);
-
-        // Ограничиваем до 3 последних записей (в коде было -5, поправлено на -3)
-        if (product.productInsideContent.productSize.length > 3) {
-            product.productInsideContent.productSize = product.productInsideContent.productSize.slice(-3);
-        }
+        // Не нужно ограничивать productSize, так как он больше не содержит истории по дате
 
         this.service.updateProductInLocalStorage(product);
     };

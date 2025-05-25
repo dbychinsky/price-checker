@@ -1,20 +1,20 @@
 import './ProductForm.scss';
-import { Button } from "../button/Button.tsx";
-import { GetUrlToMarketplace } from "../../utils/GetUrlToMarketplace.ts";
-import { currencyList, IProductCurrency } from "../../models/Currency.ts";
-import { Select } from "../select/Select.tsx";
-import { observer } from "mobx-react-lite";
-import { toast } from "react-toastify";
-import { MessageList } from "../infoPanel/MessageList.ts";
-import { IProductResponse } from "../../models/ProductResponse.ts";
-import { Serialize } from "../../utils/Serialize.ts";
-import { productExist } from "../../utils/ProductExist.ts";
-import { useStore } from "../../stores/StoreContext.ts";
-import { IProduct } from '../../models/Product.ts';
-import { useEffect } from 'react';
-import { Input } from '../input/Input.tsx';
-import { PasteButton } from '../pasteButton/PasteButton.tsx';
-import { InputDataProductRequest } from '../../common/enum/InputDataProductRequest.ts';
+import {Button} from "../button/Button.tsx";
+import {GetUrlToMarketplace} from "../../utils/GetUrlToMarketplace.ts";
+import {currencyList, IProductCurrency} from "../../models/Currency.ts";
+import {Select} from "../select/Select.tsx";
+import {observer} from "mobx-react-lite";
+import {toast} from "react-toastify";
+import {MessageList} from "../infoPanel/MessageList.ts";
+import {IProductResponse} from "../../models/ProductResponse.ts";
+import {Serialize} from "../../utils/Serialize.ts";
+import {productExist} from "../../utils/ProductExist.ts";
+import {useStore} from "../../stores/StoreContext.ts";
+import {IProduct, ISize} from '../../models/Product.ts';
+import {useEffect} from 'react';
+import {Input} from '../input/Input.tsx';
+import {PasteButton} from '../pasteButton/PasteButton.tsx';
+import {InputDataProductRequest} from '../../common/enum/InputDataProductRequest.ts';
 import mockData from '../../mocks/wb.json';
 
 export const ProductForm = observer(() => {
@@ -111,10 +111,12 @@ export const ProductForm = observer(() => {
         const newPrice = responseProduct.productInsideContent.productSize?.[0]?.size?.[0]?.priceList?.[0]?.priceTotal;
 
         if (oldPrice !== newPrice) {
-            const newSizeData = {
-                size: responseProduct.productInsideContent.productSize[0].size,
-                dateAdded: new Date(),
-            };
+            const newSizeData: ISize[] = responseProduct.productInsideContent.productSize[0].size;
+            newSizeData.forEach(size => {
+                size.priceList.forEach(price => {
+                    price.dateAdded = new Date();
+                });
+            });
 
             // Обновление истории productSize в сторе при изменении цены
             globalStore.updateProductSizeHistory(itemProduct.id, newSizeData);

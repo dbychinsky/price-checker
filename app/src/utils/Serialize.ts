@@ -1,6 +1,6 @@
-import { IProductResponse } from "../models/ProductResponse.ts";
-import { IProduct, ISize } from "../models/Product.ts";
-import { getProductPriceFraction } from './GetProductPriceFraction.ts';
+import {IProductResponse} from "../models/ProductResponse.ts";
+import {IProduct, ISize} from "../models/Product.ts";
+import {getProductPriceFraction} from './GetProductPriceFraction.ts';
 
 /**
  * Конвертация данных
@@ -40,7 +40,8 @@ export class Serialize {
                 priceList: [{
                     priceTotal: item.price ? getProductPriceFraction(item.price.total.toString()) : null,
                     priceBasic: item.price ? getProductPriceFraction(item.price.basic.toString()) : null,
-                    priceProduct: item.price ? getProductPriceFraction(item.price.product.toString()) : null
+                    priceProduct: item.price ? getProductPriceFraction(item.price.product.toString()) : null,
+                    dateAdded: dateAdded,
                 }]
             });
         });
@@ -50,8 +51,7 @@ export class Serialize {
             productInsideContent: {
                 productName: productResponse.name,
                 productSize: [{
-                    size,
-                    dateAdded,
+                    size
                 }]
             }
         }

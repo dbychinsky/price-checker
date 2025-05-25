@@ -11,7 +11,7 @@
               "origNameSize": "10 пар женские",
               "priceList": [
                 {
-                  "priceTotal": "678,00",
+                  "priceTotal": "899,00",
                   "priceBasic": "730,00",
                   "priceProduct": "576,00"
                 }
@@ -45,6 +45,17 @@
               "priceList": [
                 {
                   "priceTotal": null,
+                  "priceBasic": null,
+                  "priceProduct": null
+                }
+              ]
+            },
+            {
+              "nameSize": "412-4227.",
+              "origNameSize": "522 пар мужские",
+              "priceList": [
+                {
+                  "priceTotal": 2112,
                   "priceBasic": null,
                   "priceProduct": null
                 }
