@@ -51,8 +51,7 @@ export class Serialize {
             productInsideContent: {
                 productName: productResponse.name,
                 productSize: [{
-                    size,
-                    dateAdded,
+                    size
                 }]
             }
         }

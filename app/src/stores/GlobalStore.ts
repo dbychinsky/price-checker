@@ -1,7 +1,7 @@
 // stores/GlobalStore.ts
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { IProductCurrency } from "../models/Currency.ts";
-import { IProduct, ISize } from "../models/Product.ts";
+import { IProduct, IProductSize } from "../models/Product.ts";
 import { Service } from "../service/Service.ts";
 import { getLocalStorageSizeInMB } from "../utils/GetLocalStorageSizeInMB.ts";
 
@@ -89,7 +89,7 @@ export class GlobalStore {
 
     updateProductSizeHistory = (
         productId: number,
-        newSizeData: { size: ISize[]; dateAdded: Date }
+        newSizeData: IProductSize,
     ) => {
         const product = this.productListView.find(p => p.id === productId);
         if (!product) return;

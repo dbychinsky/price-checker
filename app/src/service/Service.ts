@@ -46,9 +46,6 @@ export class Service {
 
         productList.forEach(product => {
             product.productInsideContent.productSize?.forEach(sizeEntry => {
-                if (sizeEntry.dateAdded) {
-                    sizeEntry.dateAdded = new Date(sizeEntry.dateAdded);
-                }
                 sizeEntry.size?.forEach(size => {
                     size.priceList?.forEach(price => {
                         if (price.dateAdded) {
@@ -61,7 +58,6 @@ export class Service {
                 });
             });
         });
-
 
         return productList;
     }

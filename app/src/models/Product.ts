@@ -9,7 +9,6 @@ export interface IProductInsideContent {
 }
 
 export interface IProductSize {
-    dateAdded: Date,
     size: ISize[],
 }
 

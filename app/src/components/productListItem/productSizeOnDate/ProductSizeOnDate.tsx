@@ -11,7 +11,6 @@ const ProductSizeOnDate = (props: ProductSizeOnDateProps) => {
 
     return (
         <div className='product-size-on-date'>
-            <div>{DateUtils.formatToISO(product.dateAdded)}</div>
             {product.size.map((itemSize) => (
                 <div key={itemSize.nameSize} className='product-foreign-info'>
                     <div className='name-size'>{itemSize.nameSize}</div>
@@ -25,7 +24,6 @@ const ProductSizeOnDate = (props: ProductSizeOnDateProps) => {
                                 </div>
                             </div>
                         ))}
-                        {/*{itemSize.priceList.find((itemPrice) => itemPrice.priceTotal)?.priceTotal}*/}
                     </div>
                 </div>
             ))}

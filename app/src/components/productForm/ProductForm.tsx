@@ -105,33 +105,38 @@ export const ProductForm = observer(() => {
     };
 
     // Сравнение цен старого и нового продукта, обновление истории если цена изменилась
-// Сравнение цен старого и нового продукта, обновление истории если цена изменилась
-    const compareProductPrices = (itemProduct: IProduct, responseProduct: IProduct) => {
-        const sizes = itemProduct.productInsideContent.productSize;
-        const oldPrice = sizes?.[sizes.length - 1]?.size?.[0]?.priceList?.[0]?.priceTotal;
-        const newPrice = responseProduct.productInsideContent.productSize?.[0]?.size?.[0]?.priceList?.[0]?.priceTotal;
+    const compareProductPrices = (itemProduct: IProduct | undefined, responseProduct: IProduct | undefined) => {
+        // Нет данных у старого продукта — нечего сравнивать
+        if (!itemProduct || !itemProduct.productInsideContent || !itemProduct.productInsideContent.productSize?.length) {
+            return;
+        }
 
-        if (oldPrice !== newPrice) {
-            const currentDate = new Date();
+        // Нет данных у нового продукта — нечего сравнивать
+        if (!responseProduct || !responseProduct.productInsideContent || !responseProduct.productInsideContent.productSize?.length) {
+            return;
+        }
 
-            // Добавляем дату в каждый объект внутри priceList каждого размера
-            const updatedSizes = responseProduct.productInsideContent.productSize[0].size.map(size => ({
+        const oldSizes = itemProduct.productInsideContent.productSize;
+        const oldPrice = oldSizes[oldSizes.length - 1]?.size?.[0]?.priceList?.[0]?.priceTotal;
+
+        const newSizes = responseProduct.productInsideContent.productSize;
+        const newPrice = newSizes[0]?.size?.[0]?.priceList?.[0]?.priceTotal;
+
+        if (oldPrice !== newPrice && newSizes.length > 0) {
+            const updatedSizes = newSizes[0].size.map(size => ({
                 ...size,
                 priceList: size.priceList.map(price => ({
                     ...price,
                     dateAdded: price.dateAdded ? new Date(price.dateAdded) : new Date(),
-                }))
+                })),
             }));
 
-            const newSizeData = {
-                size: updatedSizes,
-                dateAdded: currentDate,
-            };
-
-            // Обновление истории productSize в сторе при изменении цены
-            globalStore.updateProductSizeHistory(itemProduct.id, newSizeData);
+            globalStore.updateProductSizeHistory(itemProduct.id, { size: updatedSizes });
         }
     };
+
+
+
 
 
     // Проверяем что введено - url или артикул
