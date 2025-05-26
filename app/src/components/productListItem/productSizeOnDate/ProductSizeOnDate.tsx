@@ -1,7 +1,6 @@
-import {IProductSize} from "../../../models/Product";
+import { IProductSize } from "../../../models/Product";
 import DateUtils from "../../../utils/DateUtils";
 import "./ProductSizeOnDate.scss"
-
 
 interface ProductSizeOnDateProps {
     product: IProductSize;
@@ -18,7 +17,15 @@ const ProductSizeOnDate = (props: ProductSizeOnDateProps) => {
                     <div className='name-size'>{itemSize.nameSize}</div>
                     <div className='orig-name-size'>{itemSize.origNameSize}</div>
                     <div className='price-total'>
-                        {itemSize.priceList.find((itemPrice) => itemPrice.priceTotal)?.priceTotal}
+                        {itemSize.priceList.map((itemPrice, index) => (
+                            <div key={index}>
+                                <div>{itemPrice.priceTotal}</div>
+                                <div>
+                                    {DateUtils.formatToISOWithTime(itemPrice.dateAdded)}
+                                </div>
+                            </div>
+                        ))}
+                        {/*{itemSize.priceList.find((itemPrice) => itemPrice.priceTotal)?.priceTotal}*/}
                     </div>
                 </div>
             ))}

@@ -105,21 +105,34 @@ export const ProductForm = observer(() => {
     };
 
     // Сравнение цен старого и нового продукта, обновление истории если цена изменилась
+// Сравнение цен старого и нового продукта, обновление истории если цена изменилась
     const compareProductPrices = (itemProduct: IProduct, responseProduct: IProduct) => {
         const sizes = itemProduct.productInsideContent.productSize;
         const oldPrice = sizes?.[sizes.length - 1]?.size?.[0]?.priceList?.[0]?.priceTotal;
         const newPrice = responseProduct.productInsideContent.productSize?.[0]?.size?.[0]?.priceList?.[0]?.priceTotal;
 
         if (oldPrice !== newPrice) {
+            const currentDate = new Date();
+
+            // Добавляем дату в каждый объект внутри priceList каждого размера
+            const updatedSizes = responseProduct.productInsideContent.productSize[0].size.map(size => ({
+                ...size,
+                priceList: size.priceList.map(price => ({
+                    ...price,
+                    dateAdded: price.dateAdded ? new Date(price.dateAdded) : new Date(),
+                }))
+            }));
+
             const newSizeData = {
-                size: responseProduct.productInsideContent.productSize[0].size,
-                dateAdded: new Date(),
+                size: updatedSizes,
+                dateAdded: currentDate,
             };
 
             // Обновление истории productSize в сторе при изменении цены
             globalStore.updateProductSizeHistory(itemProduct.id, newSizeData);
         }
     };
+
 
     // Проверяем что введено - url или артикул
     const checkingValueInput = (inputText: string): InputDataProductRequest =>

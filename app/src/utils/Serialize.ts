@@ -40,7 +40,8 @@ export class Serialize {
                 priceList: [{
                     priceTotal: item.price ? getProductPriceFraction(item.price.total.toString()) : null,
                     priceBasic: item.price ? getProductPriceFraction(item.price.basic.toString()) : null,
-                    priceProduct: item.price ? getProductPriceFraction(item.price.product.toString()) : null
+                    priceProduct: item.price ? getProductPriceFraction(item.price.product.toString()) : null,
+                    dateAdded: dateAdded
                 }]
             });
         });

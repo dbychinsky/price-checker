@@ -27,6 +27,20 @@ class DateUtils {
         return `${year}-${month}-${day}`;
     }
 
+    // форматирует дату в строку с временем в формате YYYY-MM-DD HH:mm:ss:
+    static formatToISOWithTime(date: Date): string {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+
+
     // Преобразование в человекочитаемый формат (например, 22 апреля 2025)
     static formatReadable(date: Date): string {
         return date.toLocaleDateString('ru-RU', {

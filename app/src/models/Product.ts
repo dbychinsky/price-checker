@@ -24,6 +24,7 @@ export interface IProductPrice {
     priceTotal: string | null,
     priceBasic: string | null,
     priceProduct: string | null,
+    dateAdded: Date,
 }
 
 

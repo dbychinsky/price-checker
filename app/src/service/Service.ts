@@ -45,16 +45,27 @@ export class Service {
         const productList: IProduct[] = this.load(this.PRODUCT_LIST_KEY);
 
         productList.forEach(product => {
-            const content = product.productInsideContent;
-            content.productSize?.forEach(sizeEntry => {
+            product.productInsideContent.productSize?.forEach(sizeEntry => {
                 if (sizeEntry.dateAdded) {
                     sizeEntry.dateAdded = new Date(sizeEntry.dateAdded);
                 }
+                sizeEntry.size?.forEach(size => {
+                    size.priceList?.forEach(price => {
+                        if (price.dateAdded) {
+                            price.dateAdded = new Date(price.dateAdded);
+                        } else {
+                            // Если поле отсутствует — можно задать дефолт, чтобы избежать undefined
+                            price.dateAdded = new Date(0); // или new Date() для текущей даты
+                        }
+                    });
+                });
             });
         });
 
+
         return productList;
     }
+
 
 
     /**
