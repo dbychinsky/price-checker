@@ -48,6 +48,7 @@ export class Serialize {
 
         return {
             id: productResponse.id,
+            dateAddingProduct: dateAdded,
             productInsideContent: {
                 productName: productResponse.name,
                 productSize: [{

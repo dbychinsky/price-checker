@@ -5,7 +5,7 @@ import {IProduct} from '../../models/Product.ts';
 import {useStore} from '../../stores/StoreContext.ts';
 import {useState} from 'react';
 import {CopyButton} from "../copyButton/CopyButton.tsx";
-import ProductSizeOnDate from './productSizeOnDate/ProductSizeOnDate.tsx';
+import { ProductSizeOnDate } from './productSizeOnDate/ProductSizeOnDate.tsx';
 
 interface ProductListItemProps {
     product: IProduct;

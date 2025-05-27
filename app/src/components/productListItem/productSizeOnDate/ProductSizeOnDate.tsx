@@ -1,12 +1,13 @@
 import { IProductSize } from "../../../models/Product";
 import DateUtils from "../../../utils/DateUtils";
 import "./ProductSizeOnDate.scss"
+import { observer } from 'mobx-react-lite';
 
 interface ProductSizeOnDateProps {
     product: IProductSize;
 }
 
-const ProductSizeOnDate = (props: ProductSizeOnDateProps) => {
+export const ProductSizeOnDate = observer((props: ProductSizeOnDateProps) => {
     const {product} = props;
 
     return (
@@ -34,6 +35,4 @@ const ProductSizeOnDate = (props: ProductSizeOnDateProps) => {
             ))}
         </div>
     );
-};
-
-export default ProductSizeOnDate;
+});
