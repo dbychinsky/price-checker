@@ -12,7 +12,6 @@ export interface IProductSize {
     size: ISize[],
 }
 
-
 export interface ISize {
     nameSize: string,
     origNameSize: string,

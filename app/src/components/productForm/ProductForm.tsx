@@ -136,9 +136,6 @@ export const ProductForm = observer(() => {
     };
 
 
-
-
-
     // Проверяем что введено - url или артикул
     const checkingValueInput = (inputText: string): InputDataProductRequest =>
         /\D/.test(inputText) ? InputDataProductRequest.PRODUCT_URL : InputDataProductRequest.PRODUCT_ARTICLE;

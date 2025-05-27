@@ -1,7 +1,7 @@
 // stores/GlobalStore.ts
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { IProductCurrency } from "../models/Currency.ts";
-import { IProduct, IProductSize } from "../models/Product.ts";
+import { IProduct, IProductPrice, IProductSize } from "../models/Product.ts";
 import { Service } from "../service/Service.ts";
 import { getLocalStorageSizeInMB } from "../utils/GetLocalStorageSizeInMB.ts";
 
@@ -89,7 +89,7 @@ export class GlobalStore {
 
     updateProductSizeHistory = (
         productId: number,
-        newSizeData: IProductSize,
+        newSizeData: IProductSize
     ) => {
         const product = this.productListView.find(p => p.id === productId);
         if (!product) return;
@@ -98,15 +98,58 @@ export class GlobalStore {
             product.productInsideContent.productSize = [];
         }
 
-        product.productInsideContent.productSize.push(newSizeData);
+        const productSizeList = product.productInsideContent.productSize;
 
-        // Ограничиваем до 3 последних записей (в коде было -5, поправлено на -3)
-        if (product.productInsideContent.productSize.length > 3) {
-            product.productInsideContent.productSize = product.productInsideContent.productSize.slice(-3);
+        if (productSizeList.length === 0) {
+            // Добавляем новую запись, обрезая priceList в каждом размере до последних 3 цен
+            const newEntry: IProductSize = {
+                size: newSizeData.size.map(size => ({
+                    ...size,
+                    priceList: size.priceList.slice(-3),
+                })),
+            };
+            productSizeList.push(newEntry);
+        } else {
+            // Берём последнюю запись для сравнения и обновления
+            const latestEntry = productSizeList[productSizeList.length - 1];
+
+            newSizeData.size.forEach(newSize => {
+                const matchedSize = latestEntry.size.find(existingSize =>
+                    existingSize.nameSize === newSize.nameSize &&
+                    existingSize.origNameSize === newSize.origNameSize
+                );
+
+                if (matchedSize) {
+                    newSize.priceList.forEach(newPrice => {
+                        const alreadyExists = matchedSize.priceList.some(
+                            (existingPrice: IProductPrice) =>
+                                existingPrice.priceTotal === newPrice.priceTotal &&
+                                existingPrice.priceBasic === newPrice.priceBasic &&
+                                existingPrice.priceProduct === newPrice.priceProduct
+                        );
+
+                        if (!alreadyExists) {
+                            matchedSize.priceList.push(newPrice);
+                            // Ограничиваем max 3 записи в priceList
+                            if (matchedSize.priceList.length > 3) {
+                                matchedSize.priceList = matchedSize.priceList.slice(-3);
+                            }
+                        }
+                    });
+                } else {
+                    // Добавляем новый размер, обрезая priceList до 3 записей
+                    latestEntry.size.push({
+                        ...newSize,
+                        priceList: newSize.priceList.slice(-3),
+                    });
+                }
+            });
         }
 
         this.service.updateProductInLocalStorage(product);
     };
+
+
 
 
     // Удалить из продукта item

@@ -40,6 +40,19 @@ class DateUtils {
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
 
+    static formatDateToDayMonth = (date: Date): string => {
+        const months = [
+            'января', 'февраля', 'марта', 'апреля',
+            'мая', 'июня', 'июля', 'августа',
+            'сентября', 'октября', 'ноября', 'декабря'
+        ];
+
+        const day = date.getDate();
+        const monthName = months[date.getMonth()];
+
+        return `${day} ${monthName}`;
+    };
+
 
     // Преобразование в человекочитаемый формат (например, 22 апреля 2025)
     static formatReadable(date: Date): string {

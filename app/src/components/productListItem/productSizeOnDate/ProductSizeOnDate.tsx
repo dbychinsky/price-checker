@@ -17,11 +17,11 @@ const ProductSizeOnDate = (props: ProductSizeOnDateProps) => {
                     <div className='orig-name-size'>{itemSize.origNameSize}</div>
                     <div className='price-total'>
                         {itemSize.priceList.map((itemPrice, index) => (
-                            <div key={index}>
-                                <div>{itemPrice.priceTotal}</div>
-                                <div>
-                                    {DateUtils.formatToISOWithTime(itemPrice.dateAdded)}
+                            <div key={index} className='info'>
+                                <div className='date'>
+                                    {DateUtils.formatDateToDayMonth(itemPrice.dateAdded)}
                                 </div>
+                                <div className='sum'>{itemPrice.priceTotal}</div>
                             </div>
                         ))}
                     </div>

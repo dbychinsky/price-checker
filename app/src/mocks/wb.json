@@ -55,7 +55,18 @@
               "origNameSize": "БАРК",
               "priceList": [
                 {
-                  "priceTotal": "666,00",
+                  "priceTotal": "671,00",
+                  "priceBasic": "730,00",
+                  "priceProduct": "576,00"
+                }
+              ]
+            },
+            {
+              "nameSize": "123",
+              "origNameSize": "123",
+              "priceList": [
+                {
+                  "priceTotal": "669,00",
                   "priceBasic": "730,00",
                   "priceProduct": "576,00"
                 }
