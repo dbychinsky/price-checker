@@ -26,6 +26,13 @@
 
             .info {
                 margin-right: 30px;
+                max-width: 30%;
+                text-align: center;
+
+                .emptySum {
+                    font-size: 1rem;
+                    color: var(--color-grey);
+                }
             }
         }
     }

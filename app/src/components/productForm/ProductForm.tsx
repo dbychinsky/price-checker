@@ -16,6 +16,7 @@ import { Input } from '../input/Input.tsx';
 import { PasteButton } from '../pasteButton/PasteButton.tsx';
 import { InputDataProductRequest } from '../../common/enum/InputDataProductRequest.ts';
 import mockData from '../../mocks/wb.json';
+import { toJS } from 'mobx';
 
 export const ProductForm = observer(() => {
     const {globalStore, service} = useStore();
@@ -37,6 +38,17 @@ export const ProductForm = observer(() => {
             globalStore.setCurrency(currencyList[0])
         }
     }, []);
+
+    useEffect(() => {
+        console.log(toJS(globalStore.productListView));
+        globalStore.productListView.map((productItem) => {
+            service.getProductFromWB(productItem.id, globalStore.currency)
+                .then(responseProduct => {
+                    globalStore.removeProduct(productItem.id)
+                    saveProduct(responseProduct)
+                })
+        })
+    }, [globalStore.currency]);
 
     // Обработка изменения валюты
     const onChangeSelect = (value: IProductCurrency) => {
@@ -131,7 +143,7 @@ export const ProductForm = observer(() => {
                 })),
             }));
 
-            globalStore.updateProductSizeHistory(itemProduct.id, { size: updatedSizes });
+            globalStore.updateProductSizeHistory(itemProduct.id, {size: updatedSizes});
         }
     };
 
