@@ -27,8 +27,8 @@ export const FakeButtons = () => {
                 Не 1
             </button>
             <button
-                onClick={() => globalStore.setProductUrl('https://global.wildberries.ru/product/diffuzor-dlya-doma-265118573?option=411463908')}>
-                Не 2
+                onClick={() => globalStore.setProductUrl('https://www.wildberries.by/catalog/421709009/detail.aspx')}>
+                instr
             </button>
             <button
                 onClick={() => globalStore.setProductUrl('https://global.wildberries.ru/product/kapsuly-dlya-stirki-belya-universal-100-sht-235403369?option=370951402')}>

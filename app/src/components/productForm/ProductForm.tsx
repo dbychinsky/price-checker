@@ -15,12 +15,24 @@ import { useEffect } from 'react';
 import { Input } from '../input/Input.tsx';
 import { PasteButton } from '../pasteButton/PasteButton.tsx';
 import { InputDataProductRequest } from '../../common/enum/InputDataProductRequest.ts';
-import mockData from '../../mocks/wb.json';
 
+
+/**
+ * Компонент формы для добавления и отображения списка продуктов.
+ * Позволяет вводить URL или артикул продукта, выбирать валюту,
+ * загружать список из LocalStorage, проверять и обновлять цены продуктов.
+ * Использует MobX для управления состоянием и сервис для работы с API и LocalStorage.
+ *
+ * @component
+ * @returns {JSX.Element} React компонент формы продуктов
+ */
 export const ProductForm = observer(() => {
     const {globalStore, service} = useStore();
 
-    // При монтировании компонента загружаем продукты и проверяем изменение цен
+    /**
+     * Загружает продукты из LocalStorage при монтировании
+     * и проверяет изменение цен.
+     */
     useEffect(() => {
         globalStore.loadFromLocalStorage().then(() => {
             if (globalStore.productListView.length > 0) {
@@ -29,6 +41,10 @@ export const ProductForm = observer(() => {
         });
     }, []);
 
+    /**
+     * Загружает текущую валюту из LocalStorage
+     * или устанавливает валюту по умолчанию.
+     */
     useEffect(() => {
         const currentCurrency: IProductCurrency = service.loadCurrentCurrencyToLocalStorage();
         if (Object.keys(currentCurrency).length > 0) {
@@ -38,24 +54,35 @@ export const ProductForm = observer(() => {
         }
     }, []);
 
+    /**
+     * При изменении валюты обновляет данные продуктов
+     * из API и проверяет цены.
+     */
     useEffect(() => {
         globalStore.productListView.map((productItem) => {
             service.getProductFromWB(productItem.id, globalStore.currency)
                 .then(responseProduct => {
-                    globalStore.removeProduct(productItem.id)
-                    saveProduct(responseProduct)
+                    globalStore.removeProduct(productItem.id);
+                    saveProduct(responseProduct);
                 })
                 .then(() => checkChangePrice());
         })
     }, [globalStore.currency]);
 
-    // Обработка изменения валюты
+    /**
+     * Обрабатывает выбор новой валюты.
+     * @param {IProductCurrency} value - выбранная валюта
+     */
     const onChangeSelect = (value: IProductCurrency) => {
         if (!value) return;
         globalStore.setCurrency(value);
     };
 
-    // Добавление продукта в список
+    /**
+     * Добавляет продукт в список по введенному URL или артикулу.
+     * Загружает данные из API и сохраняет в стор и LocalStorage.
+     * Показывает сообщения об ошибках при необходимости.
+     */
     const addProductToList = () => {
         globalStore.setIsLoading(true);
         const productUrlShort = GetUrlToMarketplace.getShortUrlMarketplace(globalStore.productUrl);
@@ -66,8 +93,7 @@ export const ProductForm = observer(() => {
         if (productUrlShort !== '') {
 
             if (checkingValueInput(productUrlShort) === InputDataProductRequest.PRODUCT_URL) {
-                // Введенные данные это url
-                productValue = productId
+                productValue = productId;
             }
 
             if (checkingValueInput(productUrlShort) === InputDataProductRequest.PRODUCT_ARTICLE) {
@@ -90,22 +116,33 @@ export const ProductForm = observer(() => {
         }
     };
 
-    // Сохранение нового продукта в список и LocalStorage
+    /**
+     * Сохраняет продукт в стор и LocalStorage.
+     * @param {IProductResponse} response - ответ API с данными продукта
+     */
     const saveProduct = (response: IProductResponse) => {
         const productConvertedView = Serialize.responseToView(response);
         globalStore.setProductListView(productConvertedView);
         service.saveProductToLocalStorage(productConvertedView);
     };
 
-    // Проверка изменения цены для каждого продукта
+    /**
+     * Проверяет изменение цен у продуктов в списке.
+     * Сравнивает данные из стора и моковых данных (или API).
+     */
     const checkChangePrice = () => {
         const productListView: IProduct[] = globalStore.productListView;
 
-        productListView.forEach((itemProduct, index) => {
-            const mockProduct = mockData[index] as unknown as IProduct;
-            compareProductPrices(itemProduct, mockProduct);
+        service.fetchMockProducts().then((mockProducts: IProduct[]) => {
+            productListView.forEach((product) => {
+                const matchedProduct = mockProducts.find(mock => mock.id === product.id);
+                if (matchedProduct) {
+                    compareProductPrices(product, matchedProduct);
+                }
+            });
         });
 
+        // Альтернативно, можно получать с API:
         // productListView.forEach((itemProduct) => {
         //     service.getProductFromWB(itemProduct.id, globalStore.currency)
         //         .then((response) => {
@@ -115,14 +152,17 @@ export const ProductForm = observer(() => {
         // });
     };
 
-    // Сравнение цен старого и нового продукта, обновление истории если цена изменилась
+    /**
+     * Сравнивает цены старого и нового продукта и обновляет историю,
+     * если цены изменились.
+     * @param {IProduct | undefined} itemProduct - старый продукт
+     * @param {IProduct | undefined} responseProduct - новый продукт
+     */
     const compareProductPrices = (itemProduct: IProduct | undefined, responseProduct: IProduct | undefined) => {
-        // Нет данных у старого продукта — нечего сравнивать
         if (!itemProduct || !itemProduct.productInsideContent || !itemProduct.productInsideContent.productSize?.length) {
             return;
         }
 
-        // Нет данных у нового продукта — нечего сравнивать
         if (!responseProduct || !responseProduct.productInsideContent || !responseProduct.productInsideContent.productSize?.length) {
             return;
         }
@@ -146,8 +186,11 @@ export const ProductForm = observer(() => {
         }
     };
 
-
-    // Проверяем что введено - url или артикул
+    /**
+     * Определяет, является ли введённое значение URL или артикулом.
+     * @param {string} inputText - введённый текст
+     * @returns {InputDataProductRequest} тип введённых данных
+     */
     const checkingValueInput = (inputText: string): InputDataProductRequest =>
         /\D/.test(inputText) ? InputDataProductRequest.PRODUCT_URL : InputDataProductRequest.PRODUCT_ARTICLE;
 

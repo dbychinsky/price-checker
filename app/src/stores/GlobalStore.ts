@@ -1,79 +1,100 @@
-// stores/GlobalStore.ts
 import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { IProductCurrency } from "../models/Currency.ts";
-import { IProduct, IProductPrice, IProductSize } from "../models/Product.ts";
+import { IProduct, IProductPrice, IProductSize, ISize } from "../models/Product.ts";
 import { Service } from "../service/Service.ts";
 import { getLocalStorageSizeInMB } from "../utils/GetLocalStorageSizeInMB.ts";
 
+/**
+ * Глобальный MobX-стор приложения для управления продуктами, валютой и состоянием загрузки.
+ */
 export class GlobalStore {
-    // Сервис для работы с данными (API, LocalStorage)
+    /** Сервис для работы с API и LocalStorage */
     private service: Service;
 
-    // Индикатор загрузки данных
+    /** Индикатор загрузки данных */
     isLoading = false;
 
-    // Адрес продукта для добавления
+    /** Введённый URL продукта */
     productUrl = '';
 
-    // Текущая валюта
+    /** Текущая валюта приложения */
     currency: IProductCurrency;
 
-    // Список продуктов для отображения
+    /** Список отображаемых продуктов (из localStorage) */
     productListView: IProduct[] = [];
 
-    // Список актуальных продуктов с сервера для сравнения с тем что отображается
+    /** Список актуальных продуктов с сервера (для сравнения) */
     productListFromWb: IProduct[] = [];
 
-    // Процент заполненности LocalStorage
+    /** Заполненность localStorage в МБ */
     fullFilledLS = 0;
 
-    // Конструктор принимает зависимость (service)
+    /**
+     * Создает экземпляр глобального стора.
+     * @param service - Сервис для загрузки/сохранения данных.
+     */
     constructor(service: Service) {
-        this.service = service;  // Инициализируем сервис
+        this.service = service;
         this.currency = service.loadCurrentCurrencyToLocalStorage();
 
-        makeAutoObservable(this); // Делает все свойства и методы автоматически наблюдаемыми для MobX
+        makeAutoObservable(this);
 
-        // Реакция на изменение длины списка продуктов
         reaction(
-            () => this.productListView.length,  // Следим за длиной списка продуктов
+            () => this.productListView.length,
             () => {
-                this.calcFullFilledLS(getLocalStorageSizeInMB());  // Пересчитываем заполненность LocalStorage
+                this.calcFullFilledLS(getLocalStorageSizeInMB());
             }
         );
+
         reaction(
             () => this.currency,
             (currency) => this.service.saveCurrentCurrencyToLocalStorage(currency)
         );
     }
 
-    // Установить URL продукта
+    /**
+     * Устанавливает URL продукта.
+     * @param url - URL для добавления продукта.
+     */
     setProductUrl = (url: string) => {
         this.productUrl = url;
     };
 
-    // Установить состояние загрузки
+    /**
+     * Устанавливает индикатор загрузки.
+     * @param loading - `true`, если идёт загрузка.
+     */
     setIsLoading = (loading: boolean) => {
         this.isLoading = loading;
     };
 
-    // Установить валюту продукта
+    /**
+     * Устанавливает текущую валюту.
+     * @param currency - Объект валюты.
+     */
     setCurrency = (currency: IProductCurrency) => {
         this.currency = currency;
     };
 
-    // Добавить продукт в отображаемый список
+    /**
+     * Добавляет продукт в отображаемый список.
+     * @param product - Продукт для отображения.
+     */
     setProductListView = (product: IProduct) => {
-        this.productListView.push(product);  // Добавляем продукт в массив
+        this.productListView.push(product);
     };
 
-
-    // Добавить продукт в список актуальных продуктов
+    /**
+     * Добавляет продукт в список продуктов с сервера.
+     * @param product - Продукт для сравнения.
+     */
     setProductListFromWb = (product: IProduct) => {
-        this.productListFromWb.push(product);  // Добавляем продукт в массив
+        this.productListFromWb.push(product);
     };
 
-    // Загрузить продукты из LocalStorage через сервис
+    /**
+     * Загружает список продуктов из localStorage.
+     */
     loadFromLocalStorage = async () => {
         const products = await this.service.loadProductFromLocalStorage();
         runInAction(() => {
@@ -81,12 +102,78 @@ export class GlobalStore {
         });
     };
 
-    // Удалить продукт из списка
+    /**
+     * Удаляет продукт из отображаемого списка и localStorage.
+     * @param productId - ID продукта.
+     */
     removeProduct = (productId: number) => {
         this.productListView = this.productListView.filter(p => p.id !== productId);
         this.service.removeProductFromLocalStorage(productId);
     };
 
+
+    /**
+     * Проверяет, совпадают ли два объекта цены.
+     * @param a - Первый объект цены.
+     * @param b - Второй объект цены.
+     * @returns true, если цены равны.
+     */
+    private isPriceEqual(a: IProductPrice, b: IProductPrice): boolean {
+        return (
+            a.priceTotal === b.priceTotal &&
+            a.priceBasic === b.priceBasic &&
+            a.priceProduct === b.priceProduct
+        );
+    }
+
+    /**
+     * Добавляет новые цены в priceList размера, ограничивая длину 3.
+     * @param existingSize - Размер с текущим priceList.
+     * @param newPrices - Массив новых цен.
+     */
+    private addNewPrices(existingSize: ISize, newPrices: IProductPrice[]) {
+        newPrices.forEach(newPrice => {
+            const alreadyExists = existingSize.priceList.some(existingPrice =>
+                this.isPriceEqual(existingPrice, newPrice)
+            );
+            if (!alreadyExists) {
+                existingSize.priceList.push(newPrice);
+                if (existingSize.priceList.length > 3) {
+                    existingSize.priceList = existingSize.priceList.slice(-3);
+                }
+            }
+        });
+    }
+
+    /**
+     * Обновляет последний элемент productSize новыми размерами и ценами.
+     * @param latestEntry - Последний элемент productSize.
+     * @param newSizes - Новые данные размеров с ценами.
+     */
+    private updateLatestEntry(latestEntry: IProductSize, newSizes: IProductSize["size"]) {
+        newSizes.forEach(newSize => {
+            const matchedSize = latestEntry.size.find(
+                existingSize =>
+                    existingSize.nameSize === newSize.nameSize &&
+                    existingSize.origNameSize === newSize.origNameSize
+            );
+
+            if (matchedSize) {
+                this.addNewPrices(matchedSize, newSize.priceList);
+            } else {
+                latestEntry.size.push({
+                    ...newSize,
+                    priceList: newSize.priceList.slice(-3),
+                });
+            }
+        });
+    }
+
+    /**
+     * Обновляет историю изменения цен в productSize, ограничивая до 3 последних записей.
+     * @param productId - ID продукта.
+     * @param newSizeData - Новые данные о размере и ценах.
+     */
     updateProductSizeHistory = (
         productId: number,
         newSizeData: IProductSize
@@ -101,7 +188,6 @@ export class GlobalStore {
         const productSizeList = product.productInsideContent.productSize;
 
         if (productSizeList.length === 0) {
-            // Добавляем новую запись, обрезая priceList в каждом размере до последних 3 цен
             const newEntry: IProductSize = {
                 size: newSizeData.size.map(size => ({
                     ...size,
@@ -110,65 +196,18 @@ export class GlobalStore {
             };
             productSizeList.push(newEntry);
         } else {
-            // Берём последнюю запись для сравнения и обновления
             const latestEntry = productSizeList[productSizeList.length - 1];
-
-            newSizeData.size.forEach(newSize => {
-                const matchedSize = latestEntry.size.find(existingSize =>
-                    existingSize.nameSize === newSize.nameSize &&
-                    existingSize.origNameSize === newSize.origNameSize
-                );
-
-                if (matchedSize) {
-                    newSize.priceList.forEach(newPrice => {
-                        const alreadyExists = matchedSize.priceList.some(
-                            (existingPrice: IProductPrice) =>
-                                existingPrice.priceTotal === newPrice.priceTotal &&
-                                existingPrice.priceBasic === newPrice.priceBasic &&
-                                existingPrice.priceProduct === newPrice.priceProduct
-                        );
-
-                        if (!alreadyExists) {
-                            matchedSize.priceList.push(newPrice);
-                            // Ограничиваем max 3 записи в priceList
-                            if (matchedSize.priceList.length > 3) {
-                                matchedSize.priceList = matchedSize.priceList.slice(-3);
-                            }
-                        }
-                    });
-                } else {
-                    // Добавляем новый размер, обрезая priceList до 3 записей
-                    latestEntry.size.push({
-                        ...newSize,
-                        priceList: newSize.priceList.slice(-3),
-                    });
-                }
-            });
+            this.updateLatestEntry(latestEntry, newSizeData.size);
         }
 
         this.service.updateProductInLocalStorage(product);
     };
 
-
-
-
-    // Удалить из продукта item
-    // removeItemFromProduct(productId: number, origNameSize: string) {
-    //     const product = this.productListView.find((item) => item.id === productId);
-    //     const productListNew = product?.productInsideContent
-    //         .map((productInside) => productInside.size
-    //             .filter((sizeItem) => sizeItem.origNameSize !== origNameSize));
-    //
-    //     runInAction(() => {
-    //         this.productListView = this.productListView.filter(p => p.id !== productId);
-    //         if (productListNew) {
-    //             this.productListView.push(productListNew)
-    //         }
-    //     });
-    // }
-
-    // Рассчитать заполненность LocalStorage
+    /**
+     * Обновляет процент заполненности localStorage.
+     * @param value - Значение заполненности (в МБ).
+     */
     calcFullFilledLS = (value: number) => {
-        this.fullFilledLS = value;  // Обновляем процент заполненности
-    }
+        this.fullFilledLS = value;
+    };
 }

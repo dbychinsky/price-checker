@@ -11,7 +11,7 @@
               "origNameSize": "10 пар женские",
               "priceList": [
                 {
-                  "priceTotal": "678,00",
+                  "priceTotal": "278,00",
                   "priceBasic": "730,00",
                   "priceProduct": "576,00"
                 }
@@ -229,6 +229,31 @@
             }
           ],
           "dateAdded": "2025-04-24T12:43:52.540Z"
+        }
+      ]
+    }
+  },
+  {
+    "id": 421709009,
+    "dateAddingProduct": "2025-05-28T08:49:32.217Z",
+    "productInsideContent": {
+      "productName": "Набор инструментов для автомобиля, дома, в кейсе",
+      "productSize": [
+        {
+          "size": [
+            {
+              "nameSize": "",
+              "origNameSize": "0",
+              "priceList": [
+                {
+                  "priceTotal": "904000,00",
+                  "priceBasic": "1000000,00",
+                  "priceProduct": "900000,00",
+                  "dateAdded": "2025-05-28T08:49:32.217Z"
+                }
+              ]
+            }
+          ]
         }
       ]
     }

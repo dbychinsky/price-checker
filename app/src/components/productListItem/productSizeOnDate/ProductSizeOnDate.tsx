@@ -1,17 +1,40 @@
-import { IProductSize } from "../../../models/Product";
+import { IProductPrice, IProductSize } from "../../../models/Product";
 import DateUtils from "../../../utils/DateUtils";
 import "./ProductSizeOnDate.scss"
 import { observer } from 'mobx-react-lite';
+import { useStore } from '../../../stores/StoreContext.ts';
+import { clsx } from 'clsx';
 
 interface ProductSizeOnDateProps {
     product: IProductSize;
+    setIsChanged: (value: boolean) => void;
 }
 
+/**
+ * Компонент отображает информацию о размерах продукта и их ценах на конкретные даты.
+ * Для каждого размера выводится имя, оригинальное имя (если не '0'),
+ * а также список цен с датами добавления.
+ *
+ * @param {ProductSizeOnDateProps} props - Свойства компонента
+ * @param {IProductSize} props.product - Данные о размере продукта и связанных ценах
+ * @returns {JSX.Element} React элемент с информацией о размерах и ценах
+ */
 export const ProductSizeOnDate = observer((props: ProductSizeOnDateProps) => {
-    const {product} = props;
+    const {product, setIsChanged} = props;
+    const {analyticsStore} = useStore();
+
+    const analicitic = (priceList: IProductPrice[]): string => {
+        const result = analyticsStore.comparePriceItem(priceList)
+        if (result) {
+            setIsChanged(true);
+            return result
+        } else {
+            return ''
+        }
+    }
 
     return (
-        <div className='product-size-on-date'>
+        <div className={clsx('product-size-on-date',)}>
             {product.size.map((itemSize) => (
                 <div key={itemSize.nameSize} className='product-foreign-info'>
                     <div className='name-size'>{itemSize.nameSize}</div>
@@ -30,6 +53,8 @@ export const ProductSizeOnDate = observer((props: ProductSizeOnDateProps) => {
                                 </div>
                             </div>
                         ))}
+                        {/*<div>{analyticsStore.comparePriceItem(itemSize.priceList)}</div>*/}
+                        <div>{analicitic(itemSize.priceList)}</div>
                     </div>
                 </div>
             ))}

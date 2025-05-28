@@ -1,6 +1,6 @@
-import {IProductCurrency} from "../models/Currency.ts";
-import {IProductResponse} from "../models/ProductResponse.ts";
-import {IProduct} from '../models/Product.ts';
+import { IProductCurrency } from "../models/Currency.ts";
+import { IProductResponse } from "../models/ProductResponse.ts";
+import { IProduct } from '../models/Product.ts';
 
 const apiUrl = import.meta.env.VITE_SERVER_URL;
 
@@ -15,7 +15,6 @@ export class Service {
     async getProductFromWB(productId: number, currency: IProductCurrency): Promise<IProductResponse> {
         try {
             const response = await fetch(`${apiUrl}?id=${productId}&currency=${currency?.value}`);
-
             if (!response.ok) {
                 throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
             }
@@ -25,6 +24,25 @@ export class Service {
         } catch (error) {
             console.error('Ошибка при выполнении запроса:', error);
             throw error; // Пробрасываем ошибку дальше
+        }
+    }
+
+    /**
+     * @description  Получение списка продуктов c StubMock.
+     */
+    async fetchMockProducts(): Promise<IProduct[]> {
+        try {
+            const response = await fetch('mocks/wb.json');
+
+            if (!response.ok) {
+                throw new Error(`Ошибка при загрузке данных: ${response.statusText}`);
+            }
+
+            const data: IProduct[] = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Ошибка загрузки моковых данных:', error);
+            return [];
         }
     }
 
@@ -61,7 +79,6 @@ export class Service {
 
         return productList;
     }
-
 
 
     /**

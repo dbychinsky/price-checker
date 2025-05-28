@@ -1,17 +1,36 @@
-// stores/RootStore.ts
-import { Service } from "../service/Service.ts";  // Импортируем сервис
-import { GlobalStore } from "./GlobalStore.ts";    // Импортируем GlobalStore
+import { Service } from "../service/Service.ts";
+import { GlobalStore } from "./GlobalStore.ts";
+import { AnalyticsStore } from './AnalyticsStore.ts';
 
+/**
+ * Корневой стор, объединяющий все стораны приложения.
+ */
 export class RootStore {
-    service: Service;         // Экземпляр сервиса
-    globalStore: GlobalStore; // Экземпляр глобального стора
+    /** Сервис для работы с API и локальными данными */
+    service: Service;
 
-    // Конструктор инициализирует сервис и глобальный стор
+    /** Стор для управления глобальным состоянием приложения */
+    globalStore: GlobalStore;
+
+    /** Стор для аналитики */
+    analyticsStore: AnalyticsStore;
+
+    /**
+     * Конструктор создает и связывает все сторы с сервисом.
+     */
     constructor() {
-        this.service = new Service();  // Создаём сервис
-        this.globalStore = new GlobalStore(this.service);  // Создаём глобальный стор и передаём в него сервис
+        /** Создание общего сервиса */
+        this.service = new Service();
+
+        /** Инициализация глобального стора с передачей сервиса */
+        this.globalStore = new GlobalStore(this.service);
+
+        /** Инициализация стора аналитики с передачей сервиса */
+        this.analyticsStore = new AnalyticsStore();
     }
 }
 
-// Экспортируем инстанс RootStore для использования в контексте
+/**
+ * Экземпляр корневого стора для использования в контексте приложения.
+ */
 export const rootStore = new RootStore();
