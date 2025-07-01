@@ -33,34 +33,41 @@ export class GetUrlToMarketplace {
      * @returns строка с ID товара
      */
     private static getUrlMarketplaceGlobal(url: string): string {
-        let result: string | undefined;
-        const hasQuery = url.includes('?');
+        try {
+            const parsedUrl = new URL(url);
+            const pathname = parsedUrl.pathname;
+            const searchParams = parsedUrl.searchParams;
 
-        if (hasQuery) {
-            if (url.includes('card=')) {
-                // Пример: https://global.wildberries.ru/product?card=110592443
-                result = this.trimStringToLastEqual(url);
-            } else {
-                // Пример: https://global.wildberries.ru/product/noski-...-216617294?option=...
-                const baseUrl = url.split('?')[0];
-                result = baseUrl.split('-').pop();
+            // Вариант 1: https://global.wildberries.ru/product?card=110592443
+            const cardId = searchParams.get('card');
+            if (cardId) {
+                return cardId;
             }
-        } else {
-            if (url.includes('catalog')) {
-                // Пример: https://global.wildberries.ru/catalog/172658116/detail.aspx
-                const parts = url.split('/').filter(Boolean); // удаляем пустые строки
-                const catalogIndex = parts.indexOf('catalog');
-                if (catalogIndex !== -1 && parts.length > catalogIndex + 1) {
-                    result = parts[catalogIndex + 1]; // ID товара сразу после "catalog"
+
+            // Вариант 2 и 5: https://global.wildberries.ru/product/noski-...-216617294
+            if (pathname.startsWith('/product')) {
+                const segments = pathname.split('-');
+                const last = segments[segments.length - 1];
+                if (/^\d+$/.test(last)) {
+                    return last;
                 }
-            } else {
-                // Пример: https://global.wildberries.ru/product/noski-...-216617294
-                result = url.split('-').pop();
             }
-        }
 
-        return result || '';
+            // Вариант 3 и 4: https://global.wildberries.ru/catalog/172658116/detail.aspx
+            if (pathname.includes('/catalog/')) {
+                const match = pathname.match(/\/catalog\/(\d+)\/detail\.aspx/);
+                if (match && match[1]) {
+                    return match[1];
+                }
+            }
+
+            return '';
+        } catch (e) {
+            console.log(e);
+            return '';
+        }
     }
+
 
     /**
      * Извлекает ID товара из региональной версии сайта (например, wildberries.by).
@@ -71,20 +78,5 @@ export class GetUrlToMarketplace {
      */
     private static getUrlMarketplaceBase(url: string): string {
         return url.slice(35).split('/')[0];
-    }
-
-    /**
-     * Извлекает значение после последнего знака "=" в строке.
-     * Используется для ссылок формата: ?card=123456
-     *
-     * @param url - исходная строка URL
-     * @returns значение после последнего "=" или пустая строка
-     */
-    private static trimStringToLastEqual(url: string): string {
-        const lastIndex = url.lastIndexOf('=');
-        if (lastIndex === -1) {
-            return '';
-        }
-        return url.slice(lastIndex + 1);
     }
 }

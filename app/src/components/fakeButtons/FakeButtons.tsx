@@ -6,33 +6,35 @@ export const FakeButtons = () => {
     return (
         <div>
             <button
-                onClick={() => globalStore.setProductUrl('https://www.wildberries.by/catalog/257276855/detail.aspx?targetUrl=SN')}>
-                Обыч
+                onClick={() => globalStore.setProductUrl(
+                    'https://global.wildberries.ru/catalog/210881437/detail.aspx')}>
+                Трусы
             </button>
             <button
-                onClick={() => globalStore.setProductUrl('https://global.wildberries.ru/product/noski-korotkie-nabor-216617294')}>
-                Гл
+                onClick={() => globalStore.setProductUrl(
+                    'https://global.wildberries.ru/catalog/209584820/detail.aspx')}>
+                Пор
             </button>
             <button
-                onClick={() => globalStore.setProductUrl('https://global.wildberries.ru/product/noski-korotkie-nabor-216617294?option=345257859')}>
-                ГлОп
+                onClick={() => globalStore.setProductUrl(
+                    'https://www.wildberries.ru/catalog/81913315/detail.aspx?targetUrl=EX&size=135189423')}>
+                Шорт
             </button>
             <button
-                onClick={() => globalStore.setProductUrl('https://global.wildberries.ru/product?card=110592443')}>
-                Не р
+                onClick={() => globalStore.setProductUrl(
+                    'https://www.wildberries.by/catalog/147467138/detail.aspx?size=280287679')}>
+              Носк
             </button>
 
             <button
-                onClick={() => globalStore.setProductUrl('https://global.wildberries.ru/product/gidrofilnoe-maslo-dlya-umyvaniya-110-ml-15357202?option=44705870')}>
-                Не 1
+                onClick={() => globalStore.setProductUrl(
+                    '420186793')}>
+                Артикул
             </button>
             <button
-                onClick={() => globalStore.setProductUrl('https://www.wildberries.by/catalog/421709009/detail.aspx')}>
-                instr
-            </button>
-            <button
-                onClick={() => globalStore.setProductUrl('https://global.wildberries.ru/product/kapsuly-dlya-stirki-belya-universal-100-sht-235403369?option=370951402')}>
-                Не 3
+                onClick={() => globalStore.setProductUrl(
+                    'https://global.wildberries.ru/catalog/251750676/detail.aspx')}>
+                принетре
             </button>
         </div>
     );

@@ -1,13 +1,12 @@
-import { IProductPrice, IProductSize } from "../../../models/Product";
+import {IProductPrice, IProductSize} from "../../../models/Product";
 import DateUtils from "../../../utils/DateUtils";
 import "./ProductSizeOnDate.scss"
-import { observer } from 'mobx-react-lite';
-import { useStore } from '../../../stores/StoreContext.ts';
-import { clsx } from 'clsx';
+import {observer} from 'mobx-react-lite';
+import {useStore} from '../../../stores/StoreContext.ts';
+import {clsx} from 'clsx';
 
 interface ProductSizeOnDateProps {
     product: IProductSize;
-    setIsChanged: (value: boolean) => void;
 }
 
 /**
@@ -20,13 +19,12 @@ interface ProductSizeOnDateProps {
  * @returns {JSX.Element} React элемент с информацией о размерах и ценах
  */
 export const ProductSizeOnDate = observer((props: ProductSizeOnDateProps) => {
-    const {product, setIsChanged} = props;
+    const {product} = props;
     const {analyticsStore} = useStore();
 
-    const analicitic = (priceList: IProductPrice[]): string => {
+    const analytic = (priceList: IProductPrice[]): string => {
         const result = analyticsStore.comparePriceItem(priceList)
         if (result) {
-            setIsChanged(true);
             return result
         } else {
             return ''
@@ -35,27 +33,43 @@ export const ProductSizeOnDate = observer((props: ProductSizeOnDateProps) => {
 
     return (
         <div className={clsx('product-size-on-date',)}>
-            {product.size.map((itemSize) => (
-                <div key={itemSize.nameSize} className='product-foreign-info'>
-                    <div className='name-size'>{itemSize.nameSize}</div>
-                    {itemSize.origNameSize !== '0' && (
-                        <div className='orig-name-size'>{itemSize.origNameSize}</div>
-                    )}
-                    <div className='price-total'>
-                        {itemSize.priceList.map((itemPrice, index) => (
-                            <div key={index} className='info'>
-                                <div className='date'>
-                                    {DateUtils.formatDateToDayMonth(itemPrice.dateAdded)}
-                                </div>
-                                <div className='sum'>
-                                    {itemPrice.priceTotal !== null ? itemPrice.priceTotal :
-                                        <div className='emptySum'>Товар отсутствует</div>}
-                                </div>
-                            </div>
-                        ))}
-                        {/*<div>{analyticsStore.comparePriceItem(itemSize.priceList)}</div>*/}
-                        <div>{analicitic(itemSize.priceList)}</div>
+            {product.size.map((itemSize, index) => (
+                <div key={index} className='product-foreign-info'>
+                    <div className='product-description'>
+                        {itemSize.nameSize && (
+                            <div className='name-size'>{itemSize.nameSize}</div>
+                        )}
+                        {itemSize.origNameSize &&
+                            itemSize.origNameSize !== '0' &&
+                            itemSize.origNameSize !== itemSize.nameSize && (
+                                <div className='orig-name-size'>{itemSize.origNameSize}</div>
+                            )}
                     </div>
+
+                    <table className='info' cellPadding={0} cellSpacing={0}>
+                        <thead>
+                        <tr className='date'>
+                            {itemSize.priceList.map((itemPrice, index) => (
+                                <th key={`header-${index}`}>
+                                    {DateUtils.formatDateToDayMonth(itemPrice.dateAdded)}
+                                </th>
+                            ))}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr className='sum'>
+                            {itemSize.priceList.map((itemPrice, index) => (
+                                <td key={`cell-${index}`}>
+                                    {itemPrice.priceTotal !== null ? (
+                                        itemPrice.priceTotal
+                                    ) : (
+                                        <div className="emptySum">Товар отсутствует</div>
+                                    )}
+                                </td>
+                            ))}
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             ))}
         </div>

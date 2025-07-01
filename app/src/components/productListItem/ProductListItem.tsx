@@ -25,7 +25,6 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
     const {product} = props;
     const {globalStore} = useStore();
     const [isHideContent, setIsHideContent] = useState(true);
-    const [isChanged, setIsChanged] = useState(false);
 
     const handleClick = () => {
         setIsHideContent(prev => !prev);
@@ -33,8 +32,7 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
 
     const productListItemWrapper = clsx(
         'product-list-item',
-        {'is-hide-content': isHideContent},
-        {'is-changed': isChanged}
+        {'is-hide-content': isHideContent}
     );
 
 
@@ -45,17 +43,16 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
             onClick={handleClick}
         >
             <div className='main-info'>
-                <div className='product-name'>
+                <h2 className='product-name'>
                     {product.productInsideContent.productName}
-                </div>
+                </h2>
                 <CopyButton textToCopy={product.id.toString()} className={'article'}/>
             </div>
             <div className='price-list'>
                 {product.productInsideContent.productSize.map((productSize, index) => (
                     <ProductSizeOnDate
                         product={productSize}
-                        key={index}
-                        setIsChanged={setIsChanged}/>
+                        key={index}/>
                 ))}
             </div>
             <div className='product-list-buttons'>

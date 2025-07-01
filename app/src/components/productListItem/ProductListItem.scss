@@ -22,12 +22,15 @@
 
     .main-info {
         display: flex;
+        gap: 10px;
         flex-flow: row nowrap;
         align-items: baseline;
 
         .product-name {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            font-weight: 400;
             width: 68%;
+            margin: 0;
         }
 
         .article {
@@ -43,11 +46,6 @@
         box-sizing: border-box;
         display: flex;
         flex-flow: column nowrap;
-        margin-top: 0.8rem;
-
-        &:empty {
-            padding: 0;
-        }
     }
 
     .product-list-buttons {

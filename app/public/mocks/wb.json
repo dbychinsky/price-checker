@@ -1,243 +1,130 @@
 [
   {
-    "id": 257276855,
+    "id": 81913315,
+    "dateAddingProduct": "2025-06-15T09:11:40.672Z",
     "productInsideContent": {
-      "productName": "Носки высокие набор",
+      "productName": "Шорты для новорожденных",
       "productSize": [
         {
           "size": [
             {
-              "nameSize": "36-41.",
-              "origNameSize": "10 пар женские",
+              "nameSize": "68",
+              "origNameSize": "68",
               "priceList": [
                 {
-                  "priceTotal": "278,00",
-                  "priceBasic": "730,00",
-                  "priceProduct": "576,00"
+                  "priceTotal": "501,00",
+                  "priceBasic": "585,00",
+                  "priceProduct": "449,00",
+                  "dateAdded": "2025-06-15T09:11:40.672Z"
                 }
               ]
             },
             {
-              "nameSize": "41-47",
-              "origNameSize": "10 пар мужские",
+              "nameSize": "74",
+              "origNameSize": "74",
               "priceList": [
                 {
-                  "priceTotal": "669,00",
-                  "priceBasic": "730,00",
-                  "priceProduct": "576,00"
+                  "priceTotal": "499,00",
+                  "priceBasic": "585,00",
+                  "priceProduct": "449,00",
+                  "dateAdded": "2025-06-15T09:11:40.672Z"
                 }
               ]
             },
             {
-              "nameSize": "36-41",
-              "origNameSize": "5 пар женские",
+              "nameSize": "80",
+              "origNameSize": "80",
               "priceList": [
                 {
-                  "priceTotal": null,
-                  "priceBasic": null,
-                  "priceProduct": null
+                  "priceTotal": "400,00",
+                  "priceBasic": "585,00",
+                  "priceProduct": "449,00",
+                  "dateAdded": "2025-06-15T09:11:40.672Z"
                 }
               ]
             },
             {
-              "nameSize": "41-47.",
-              "origNameSize": "5 пар мужские",
+              "nameSize": "86",
+              "origNameSize": "86",
               "priceList": [
                 {
-                  "priceTotal": null,
-                  "priceBasic": null,
-                  "priceProduct": null
+                  "priceTotal": "600,00",
+                  "priceBasic": "585,00",
+                  "priceProduct": "449,00",
+                  "dateAdded": "2025-06-15T09:11:40.672Z"
                 }
               ]
             },
             {
-              "nameSize": "0",
-              "origNameSize": "БАРК",
+              "nameSize": "92",
+              "origNameSize": "92",
               "priceList": [
                 {
-                  "priceTotal": "671,00",
-                  "priceBasic": "730,00",
-                  "priceProduct": "576,00"
+                  "priceTotal": "499,00",
+                  "priceBasic": "585,00",
+                  "priceProduct": "449,00",
+                  "dateAdded": "2025-06-15T09:11:40.672Z"
                 }
               ]
             },
             {
-              "nameSize": "123",
-              "origNameSize": "123",
+              "nameSize": "98",
+              "origNameSize": "98",
               "priceList": [
                 {
-                  "priceTotal": "669,00",
-                  "priceBasic": "730,00",
-                  "priceProduct": "576,00"
+                  "priceTotal": "499,00",
+                  "priceBasic": "585,00",
+                  "priceProduct": "449,00",
+                  "dateAdded": "2025-06-15T09:11:40.672Z"
+                }
+              ]
+            },
+            {
+              "nameSize": "104",
+              "origNameSize": "104",
+              "priceList": [
+                {
+                  "priceTotal": "499,00",
+                  "priceBasic": "585,00",
+                  "priceProduct": "449,00",
+                  "dateAdded": "2025-06-15T09:11:40.672Z"
+                }
+              ]
+            },
+            {
+              "nameSize": "110",
+              "origNameSize": "110",
+              "priceList": [
+                {
+                  "priceTotal": "499,00",
+                  "priceBasic": "585,00",
+                  "priceProduct": "449,00",
+                  "dateAdded": "2025-06-15T09:11:40.672Z"
+                }
+              ]
+            },
+            {
+              "nameSize": "116",
+              "origNameSize": "116",
+              "priceList": [
+                {
+                  "priceTotal": "499,00",
+                  "priceBasic": "585,00",
+                  "priceProduct": "449,00",
+                  "dateAdded": "2025-06-15T09:11:40.672Z"
                 }
               ]
             }
-          ],
-          "dateAdded": "2025-04-24T12:42:26.594Z"
-        },
-        {
-          "size": [
-            {
-              "nameSize": "36-41.",
-              "origNameSize": "10 пар женские",
-              "priceList": [
-                {
-                  "priceTotal": "670,00",
-                  "priceBasic": "730,00",
-                  "priceProduct": "576,00"
-                }
-              ]
-            },
-            {
-              "nameSize": "41-47",
-              "origNameSize": "10 пар мужские",
-              "priceList": [
-                {
-                  "priceTotal": "669,00",
-                  "priceBasic": "730,00",
-                  "priceProduct": "576,00"
-                }
-              ]
-            },
-            {
-              "nameSize": "36-41",
-              "origNameSize": "5 пар женские",
-              "priceList": [
-                {
-                  "priceTotal": null,
-                  "priceBasic": null,
-                  "priceProduct": null
-                }
-              ]
-            },
-            {
-              "nameSize": "41-47.",
-              "origNameSize": "5 пар мужские",
-              "priceList": [
-                {
-                  "priceTotal": null,
-                  "priceBasic": null,
-                  "priceProduct": null
-                }
-              ]
-            },
-            {
-              "nameSize": "0",
-              "origNameSize": "БАРК",
-              "priceList": [
-                {
-                  "priceTotal": "666,00",
-                  "priceBasic": "730,00",
-                  "priceProduct": "576,00"
-                }
-              ]
-            }
-          ],
-          "dateAdded": "2025-04-24T12:42:48.399Z"
-        },
-        {
-          "size": [
-            {
-              "nameSize": "36-41.",
-              "origNameSize": "10 пар женские",
-              "priceList": [
-                {
-                  "priceTotal": "668,00",
-                  "priceBasic": "730,00",
-                  "priceProduct": "576,00"
-                }
-              ]
-            },
-            {
-              "nameSize": "41-47",
-              "origNameSize": "10 пар мужские",
-              "priceList": [
-                {
-                  "priceTotal": "669,00",
-                  "priceBasic": "730,00",
-                  "priceProduct": "576,00"
-                }
-              ]
-            },
-            {
-              "nameSize": "36-41",
-              "origNameSize": "5 пар женские",
-              "priceList": [
-                {
-                  "priceTotal": null,
-                  "priceBasic": null,
-                  "priceProduct": null
-                }
-              ]
-            },
-            {
-              "nameSize": "41-47.",
-              "origNameSize": "5 пар мужские",
-              "priceList": [
-                {
-                  "priceTotal": null,
-                  "priceBasic": null,
-                  "priceProduct": null
-                }
-              ]
-            },
-            {
-              "nameSize": "0",
-              "origNameSize": "БАРК",
-              "priceList": [
-                {
-                  "priceTotal": "666,00",
-                  "priceBasic": "730,00",
-                  "priceProduct": "576,00"
-                }
-              ]
-            }
-          ],
-          "dateAdded": "2025-04-24T12:43:21.183Z"
+          ]
         }
       ]
     }
   },
   {
-    "id": 216617294,
+    "id": 251750676,
+    "dateAddingProduct": "2025-06-15T09:11:40.686Z",
     "productInsideContent": {
-      "productName": "Носки короткие набор",
-      "productSize": [
-        {
-          "size": [
-            {
-              "nameSize": "41-46",
-              "origNameSize": "10 пар мужские",
-              "priceList": [
-                {
-                  "priceTotal": "535,00",
-                  "priceBasic": "584,00",
-                  "priceProduct": "467,00"
-                }
-              ]
-            },
-            {
-              "nameSize": "41-46.",
-              "origNameSize": "5 пар мужские",
-              "priceList": [
-                {
-                  "priceTotal": null,
-                  "priceBasic": null,
-                  "priceProduct": null
-                }
-              ]
-            }
-          ],
-          "dateAdded": "2025-04-24T12:43:52.540Z"
-        }
-      ]
-    }
-  },
-  {
-    "id": 421709009,
-    "dateAddingProduct": "2025-05-28T08:49:32.217Z",
-    "productInsideContent": {
-      "productName": "Набор инструментов для автомобиля, дома, в кейсе",
+      "productName": "Струйное МФУ L3250 (C11CJ67418)",
       "productSize": [
         {
           "size": [
@@ -246,10 +133,10 @@
               "origNameSize": "0",
               "priceList": [
                 {
-                  "priceTotal": "904000,00",
-                  "priceBasic": "1000000,00",
-                  "priceProduct": "900000,00",
-                  "dateAdded": "2025-05-28T08:49:32.217Z"
+                  "priceTotal": "145,00",
+                  "priceBasic": "16437,00",
+                  "priceProduct": "13097,00",
+                  "dateAdded": "2025-06-15T09:11:40.686Z"
                 }
               ]
             }
