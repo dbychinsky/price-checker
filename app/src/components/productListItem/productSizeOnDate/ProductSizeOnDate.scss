@@ -4,9 +4,10 @@
     .product-foreign-info {
         display: flex;
         flex-flow: row nowrap;
+        align-items: center;
         margin-bottom: 14px;
         padding-bottom: 14px;
-        border-bottom: 1px solid var(--color-grey-dark);;
+        border-bottom: 1px solid var(--color-grey);
 
         .product-description {
             display: flex;
@@ -23,6 +24,7 @@
         .name-size {
             font-size: 0.9rem;
             color: var(--color-grey-dark2);
+            padding-bottom: 5px;
         }
 
         .orig-name-size {
@@ -41,9 +43,9 @@
             .date {
                 th {
                     font-weight: 500;
-                    border-bottom: 1px solid red;
+                    border-bottom: 1px solid var(--color-grey-light);
                     text-align: center;
-                    padding-bottom: 6px;
+                    padding: 6px 5px 0;
 
                 }
             }
@@ -51,14 +53,14 @@
             .sum {
                 td {
                     text-align: center;
-                    padding-top: 6px;
+                    padding: 6px 5px 0;
 
                 }
             }
 
             .emptySum {
-                font-size: 1rem;
-                color: var(--color-grey);
+                font-size: 0.8rem;
+                color: var(--color-grey-dark2);
             }
         }
 

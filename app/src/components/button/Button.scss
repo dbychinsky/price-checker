@@ -17,6 +17,20 @@
         border-radius: 6px;
         height: 36px;
         color: var(--color-grey-dark);
+
+        &.red {
+            color: var(--color-purple-red);
+        }
+
+        &.warning {
+            background-color: var(--color-purple-red);
+            color: var(--color-white);
+            border-color: var(--color-purple-red);
+        }
+
+        &.purple {
+            color: var(--color-purple);
+        }
     }
 
     &.icon {

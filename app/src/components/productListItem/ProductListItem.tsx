@@ -3,10 +3,11 @@ import { observer } from 'mobx-react-lite';
 import { Button } from '../button/Button.tsx';
 import { IProduct } from '../../models/Product.ts';
 import { useStore } from '../../stores/StoreContext.ts';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { CopyButton } from "../copyButton/CopyButton.tsx";
 import { ProductSizeOnDate } from './productSizeOnDate/ProductSizeOnDate.tsx';
 import { clsx } from 'clsx';
+import { ConfirmModal } from '../сonfirmModal/ConfirmModal.tsx';
 
 interface ProductListItemProps {
     product: IProduct;
@@ -25,6 +26,7 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
     const {product} = props;
     const {globalStore} = useStore();
     const [isHideContent, setIsHideContent] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleClick = () => {
         setIsHideContent(prev => !prev);
@@ -35,6 +37,19 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
         {'is-hide-content': isHideContent}
     );
 
+    const openModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const confirmDelete = () => {
+        globalStore.removeProduct(product.id);
+        setIsModalOpen(false);
+    };
 
     return (
         <div
@@ -58,15 +73,23 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
             <div className='product-list-buttons'>
                 <Button
                     text={'Удалить'}
-                    onClick={() => globalStore.removeProduct(product.id)}
+                    onClick={openModal}
                     variant={'secondary'}
+                    className={'red'}
                 />
                 <Button
                     text={'Перейти в каталог'}
                     onClick={() => globalStore.removeProduct(product.id)} // Возможно, тут ошибка - должно быть действие перехода, а не удаления
                     variant={'secondary'}
+                    className={'purple'}
                 />
             </div>
+            <ConfirmModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                onConfirm={confirmDelete}
+            />
         </div>
     );
+
 });
