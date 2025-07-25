@@ -1,9 +1,10 @@
-import {IProductPrice, IProductSize} from "../../../models/Product";
+import { IProductPrice, IProductSize } from "../../../models/Product";
 import DateUtils from "../../../utils/DateUtils";
 import "./ProductSizeOnDate.scss"
-import {observer} from 'mobx-react-lite';
-import {useStore} from '../../../stores/StoreContext.ts';
-import {clsx} from 'clsx';
+import { observer } from 'mobx-react-lite';
+import { useStore } from '../../../stores/StoreContext.ts';
+import { clsx } from 'clsx';
+import React from 'react';
 
 interface ProductSizeOnDateProps {
     product: IProductSize;
@@ -32,7 +33,16 @@ export const ProductSizeOnDate = observer((props: ProductSizeOnDateProps) => {
     }
 
     return (
-        <div className={clsx('product-size-on-date',)}>
+        <div className={'product-size-on-date'}>
+            <div className='date-list'>
+                <div className='date-item'>Размер</div>
+                {product.size[0].priceList.map((date, index) => (
+                    <div key={index} className='date-item'>
+                        {DateUtils.formatDateToDayMonth(date.dateAdded)}
+                    </div>
+                ))}
+            </div>
+
             {product.size.map((itemSize, index) => (
                 <div key={index} className='product-foreign-info'>
                     <div className='product-description'>
@@ -45,31 +55,17 @@ export const ProductSizeOnDate = observer((props: ProductSizeOnDateProps) => {
                                 <div className='orig-name-size'>{itemSize.origNameSize}</div>
                             )}
                     </div>
-
-                    <table className='info' cellPadding={0} cellSpacing={0}>
-                        <thead>
-                        <tr className='date'>
-                            {itemSize.priceList.map((itemPrice, index) => (
-                                <th key={`header-${index}`}>
-                                    {DateUtils.formatDateToDayMonth(itemPrice.dateAdded)}
-                                </th>
-                            ))}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr className='sum'>
-                            {itemSize.priceList.map((itemPrice, index) => (
-                                <td key={`cell-${index}`}>
-                                    {itemPrice.priceTotal !== null ? (
-                                        itemPrice.priceTotal
-                                    ) : (
-                                        <div className="emptySum">Товар отсутствует</div>
-                                    )}
-                                </td>
-                            ))}
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div className={'sum-list'}>
+                        {itemSize.priceList.map((itemPrice, index) => (
+                            <div key={`cell-${index}`} className={'cell'}>
+                                {itemPrice.priceTotal !== null ? (
+                                    itemPrice.priceTotal
+                                ) : (
+                                    <div className="emptySum">Товар отсутствует</div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             ))}
         </div>

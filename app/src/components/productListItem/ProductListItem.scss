@@ -46,7 +46,7 @@
         box-sizing: border-box;
         display: flex;
         flex-flow: column nowrap;
-        margin-top: 10px;
+        margin-top: 20px;
     }
 
     .product-list-buttons {
@@ -59,8 +59,11 @@
 
         .button {
             width: 50%;
-            border: none;
-            background-color: var(--color-grey-light);
+
+            &:not(.warning) {
+                border: none;
+                background-color: var(--color-grey-light);
+            }
         }
     }
 }

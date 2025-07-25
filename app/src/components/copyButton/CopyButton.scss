@@ -12,6 +12,7 @@ $background-image: 'src/assets/img/copy.svg';
         height: 20px;
         width: 20px;
         background-color: currentColor; // Цвет можно менять через `color`
+        color: var(--color-purple-light);
         mask-image: url($background-image);
         -webkit-mask-image: url($background-image); // Для Safari
         mask-size: contain;

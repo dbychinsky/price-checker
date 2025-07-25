@@ -19,13 +19,13 @@
         color: var(--color-grey-dark);
 
         &.red {
-            color: var(--color-purple-red);
+            color: var(--color-red);
         }
 
         &.warning {
-            background-color: var(--color-purple-red);
+            background-color: var(--color-red2);
             color: var(--color-white);
-            border-color: var(--color-purple-red);
+            border-color: var(--color-red2);
         }
 
         &.purple {
