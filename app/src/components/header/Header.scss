@@ -13,6 +13,7 @@ $background-image: '../../assets/img/chart.svg';
         display: flex;
         flex-flow: row nowrap;
         justify-content: center;
+        align-items: flex-end;
 
         .logo {
             color: var(--color-white);
@@ -30,14 +31,14 @@ $background-image: '../../assets/img/chart.svg';
 
             mask-position: center;
             -webkit-mask-position: center;
-            width: 28px;
-            height: 28px;
-            margin-left: 10px;
+            width: 42px;
+            height: 42px;
+            margin-left: 6px;
         }
 
         h1 {
             color: var(--color-white);
-            font-size: 1.9rem;
+            font-size: 28px;
             font-weight: 500;
             margin: 0;
         }
@@ -46,9 +47,13 @@ $background-image: '../../assets/img/chart.svg';
 
     .title {
         color: var(--color-white);
-        font-size: 1rem;
-        margin: 16px auto 4px;
+        font-size: 14px;
+        margin: 10px auto 4px;
         max-width: 230px;
         text-align: center;
+
+        span {
+            font-size: 12px;
+        }
     }
 }
