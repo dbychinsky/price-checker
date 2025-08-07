@@ -4,11 +4,14 @@ export const Header = () => {
     return (
         <div className='header'>
             <div className='heading'>
-                <div>Аналитика цен</div>
-                <div>маркетплейса wildberries</div>
+                <div className='title'>Лови цену!</div>
+                <div className='logo'></div>
             </div>
-            <h1>Самый <span>Простой</span> способ отследить изменение цены на товар</h1>
-
+            <div className='logo'>Отслеживает цену - покупай выгодно на wildberries</div>
+            {/*<div className='header-logo'>*/}
+            {/*    <div className='logo'></div>*/}
+            {/*    <h1>Отслеживайте изменения цен на товары</h1>*/}
+            {/*</div>*/}
         </div>
     );
 };

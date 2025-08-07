@@ -1,21 +1,20 @@
 import './ProductForm.scss';
-import { Button } from "../button/Button.tsx";
-import { GetUrlToMarketplace } from "../../utils/GetUrlToMarketplace.ts";
-import { currencyList, IProductCurrency } from "../../models/Currency.ts";
-import { Select } from "../select/Select.tsx";
-import { observer } from "mobx-react-lite";
-import { toast } from "react-toastify";
-import { MessageList } from "../infoPanel/MessageList.ts";
-import { IProductResponse } from "../../models/ProductResponse.ts";
-import { Serialize } from "../../utils/Serialize.ts";
-import { productExist } from "../../utils/ProductExist.ts";
-import { useStore } from "../../stores/StoreContext.ts";
-import { IProduct } from '../../models/Product.ts';
-import { useEffect } from 'react';
-import { Input } from '../input/Input.tsx';
-import { PasteButton } from '../pasteButton/PasteButton.tsx';
-import { InputDataProductRequest } from '../../common/enum/InputDataProductRequest.ts';
-
+import {Button} from "../button/Button.tsx";
+import {GetUrlToMarketplace} from "../../utils/GetUrlToMarketplace.ts";
+import {currencyList, IProductCurrency} from "../../models/Currency.ts";
+import {Select} from "../select/Select.tsx";
+import {observer} from "mobx-react-lite";
+import {toast} from "react-toastify";
+import {MessageList} from "../infoPanel/MessageList.ts";
+import {IProductResponse} from "../../models/ProductResponse.ts";
+import {Serialize} from "../../utils/Serialize.ts";
+import {productExist} from "../../utils/ProductExist.ts";
+import {useStore} from "../../stores/StoreContext.ts";
+import {IProduct} from '../../models/Product.ts';
+import {useEffect} from 'react';
+import {Input} from '../input/Input.tsx';
+import {PasteButton} from '../pasteButton/PasteButton.tsx';
+import {InputDataProductRequest} from '../../common/enum/InputDataProductRequest.ts';
 
 /**
  * Компонент формы для добавления и отображения списка продуктов.
@@ -104,7 +103,8 @@ export const ProductForm = observer(() => {
                 .then(responseProduct =>
                     productExist(responseProduct.id, globalStore.productListView)
                         ? toast.error(MessageList.ERROR_PRODUCT_EXISTS)
-                        : saveProduct(responseProduct))
+                        : saveProduct(responseProduct)
+                )
                 .catch(() => toast.error(MessageList.ERROR_PRODUCT_ADD))
                 .finally(() => {
                     globalStore.setProductUrl('');

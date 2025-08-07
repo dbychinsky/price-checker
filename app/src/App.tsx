@@ -7,19 +7,20 @@ import {ProductList} from './components/productList/ProductList.tsx';
 import {StoreContext} from './stores/StoreContext.ts';
 import {rootStore} from "./stores/RootStore.ts";
 import {Toast} from './components/toast/Toast.tsx';
-import { Header } from './components/header/Header.tsx';
+import {Header} from './components/header/Header.tsx';
 
 export const App = observer(() => {
     return (
         <StoreContext.Provider value={rootStore}>  {/* Оборачиваем в Provider */}
             <div className='app'>
                 <div className='wrapper'>
-                    <FakeButtons/>
+
                     <Header/>
                     <ProductForm/>
                     <ProductList/>
                     <Toast/>
                 </div>
+                <FakeButtons/>
                 <Footer/>
             </div>
         </StoreContext.Provider>

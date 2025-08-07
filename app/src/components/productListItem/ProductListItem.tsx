@@ -1,13 +1,13 @@
 import './ProductListItem.scss';
-import { observer } from 'mobx-react-lite';
-import { Button } from '../button/Button.tsx';
-import { IProduct } from '../../models/Product.ts';
-import { useStore } from '../../stores/StoreContext.ts';
-import React, { useState } from 'react';
-import { CopyButton } from "../copyButton/CopyButton.tsx";
-import { ProductSizeOnDate } from './productSizeOnDate/ProductSizeOnDate.tsx';
-import { clsx } from 'clsx';
-import { ConfirmModal } from '../сonfirmModal/ConfirmModal.tsx';
+import {observer} from 'mobx-react-lite';
+import {Button} from '../button/Button.tsx';
+import {IProduct} from '../../models/Product.ts';
+import {useStore} from '../../stores/StoreContext.ts';
+import React, {useState} from 'react';
+import {CopyButton} from "../copyButton/CopyButton.tsx";
+import {ProductSizeOnDate} from './productSizeOnDate/ProductSizeOnDate.tsx';
+import {clsx} from 'clsx';
+import {ConfirmModal} from '../сonfirmModal/ConfirmModal.tsx';
 
 interface ProductListItemProps {
     product: IProduct;
@@ -27,6 +27,9 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
     const {globalStore} = useStore();
     const [isHideContent, setIsHideContent] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const wildberriesUrlEnv = import.meta.env.VITE_WILDBERRIES_URL;
+
 
     const handleClick = () => {
         setIsHideContent(prev => !prev);
@@ -50,6 +53,16 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
         globalStore.removeProduct(product.id);
         setIsModalOpen(false);
     };
+
+    const goToProduct = (id: number, e?: React.MouseEvent<HTMLElement>) => {
+        e?.stopPropagation();
+        window.open(
+            `${wildberriesUrlEnv}/catalog/${id}/detail.aspx`,
+            '_blank',
+            'noopener,noreferrer'
+        );
+    };
+
 
     return (
         <div
@@ -79,7 +92,8 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
                 />
                 <Button
                     text={'Перейти в каталог'}
-                    onClick={() => globalStore.removeProduct(product.id)} // Возможно, тут ошибка - должно быть действие перехода, а не удаления
+                    // onClick={() => globalStore.removeProduct(product.id)}
+                    onClick={(e) => goToProduct(product.id, e)}
                     variant={'secondary'}
                     className={'purple'}
                 />

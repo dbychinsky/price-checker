@@ -1,12 +1,11 @@
-import { IProductCurrency } from "../models/Currency.ts";
-import { IProductResponse } from "../models/ProductResponse.ts";
-import { IProduct } from '../models/Product.ts';
+import {IProductCurrency} from "../models/Currency.ts";
+import {IProductResponse} from "../models/ProductResponse.ts";
+import {IProduct} from '../models/Product.ts';
 
 const apiUrl = import.meta.env.VITE_SERVER_URL;
 
 export class Service {
     private PRODUCT_LIST_KEY = 'PRODUCT_LIST_KEY';
-    // private PRODUCT_URL_LIST_KEY = 'PRODUCT_URL_LIST_KEY';
     private CURRENCY_KEY = 'CURRENCY_KEY';
 
     /**
@@ -79,7 +78,6 @@ export class Service {
 
         return productList;
     }
-
 
     /**
      * @description Удаление продукта из списка и сохранение в LS.

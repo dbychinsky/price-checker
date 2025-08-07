@@ -1,69 +1,45 @@
-$background-image: 'src/assets/img/like.svg';
+$background-image: 'src/assets/img/chart.svg';
 
 .header {
     display: flex;
     flex-flow: row wrap;
-    background-color: var(--color-white);
+
+    background: var(--color-background);
 
     .heading {
         width: 100%;
         display: flex;
         flex-flow: row nowrap;
-        padding: 10px;
-        gap: 10px;
-        align-items: center;
-        justify-content: center;
-        font-size: 1rem;
 
-        div {
-            &:first-child {
-            }
+        .logo {
+            color: var(--color-white);
+            position: relative;
+            background-color: currentColor; // Цвет можно менять через `color`
 
-            &:last-child {
-                background-color: var(--color-purple-light);
-                color: var(--color-purple);
-                padding: 4px 6px;
-                border-radius: 4px;
-            }
+            mask-image: url($background-image);
+            -webkit-mask-image: url($background-image); // Для Safari
+
+            mask-size: contain;
+            -webkit-mask-size: contain;
+
+            mask-repeat: no-repeat;
+            -webkit-mask-repeat: no-repeat;
+
+            mask-position: center;
+            -webkit-mask-position: center;
+            width: 20px;
+            height: 20px;
         }
+
+        .title {
+            color: var(--color-white);
+            font-size: 2rem;
+        }
+
     }
 
     h1 {
-        width: 100%;
-        font-weight: 300;
-        font-size: 1.5rem;
-        max-width: 80%;
-        margin: 10px auto 20px;
-
-        span {
-            padding-left: 33px;
-            color: var(--color-purple);
-            font-weight: 400;
-            position: relative;
-
-            &:before {
-                content: '';
-                display: inline-block;
-                width: 26px;
-                height: 26px;
-                position: absolute;
-                left: 5px;
-                top: -3px;
-
-                background-color: currentColor; // Цвет можно менять через `color`
-
-                mask-image: url($background-image);
-                -webkit-mask-image: url($background-image); // Для Safari
-
-                mask-size: contain;
-                -webkit-mask-size: contain;
-
-                mask-repeat: no-repeat;
-                -webkit-mask-repeat: no-repeat;
-
-                mask-position: center;
-                -webkit-mask-position: center;
-            }
-        }
+        color: var(--color-white);
+        font-size: 1rem;
     }
 }
