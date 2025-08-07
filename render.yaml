@@ -4,13 +4,9 @@ services:
     env: node
     rootDir: server
     buildCommand: |
-      pwd
       cd ../app && npm install && npm run build
-      pwd
       npm install
-    startCommand: |
-      pwd
-      npm start
+    startCommand: cd server && npm start
     envVars:
       - key: NODE_ENV
         value: production
