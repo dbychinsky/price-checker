@@ -1,5 +1,4 @@
 import { makeAutoObservable } from "mobx";
-import { Service } from "../service/Service.ts";
 import { IProductPrice } from '../models/Product.ts';
 
 enum CompareResults {
@@ -18,7 +17,7 @@ export class AnalyticsStore {
      * Результат сравнения данных.
      * Может принимать значения: MORE, LESS, EQUAL.
      */
-    compareResult: CompareResults = CompareResults.EQUAL;
+    // compareResult: CompareResults = CompareResults.EQUAL;
 
     /**
      * Конструктор стора аналитики.
