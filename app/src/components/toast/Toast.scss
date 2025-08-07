@@ -1,0 +1,11 @@
+.Toastify__toast-container {
+    padding: 18px;
+
+    .Toastify__toast--error {
+        background: var(--color-red2);
+    }
+
+    .Toastify__toast--success {
+        background: var(--color-green);
+    }
+}

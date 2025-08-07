@@ -1,0 +1,66 @@
+export interface IProductResponse {
+    id: number,
+    root: number,
+    kindId: number,
+    brand: '',
+    brandId: number,
+    siteBrandId: number,
+    colors: [],
+    subjectId: number,
+    subjectParentId: number,
+    name: '',
+    entity: '',
+    matchId: number,
+    supplier: '',
+    supplierId: number,
+    supplierRating: number,
+    supplierFlags: number,
+    pics: number,
+    rating: number,
+    reviewRating: number,
+    nmReviewRating: number,
+    feedbacks: number,
+    nmFeedbacks: number,
+    panelPromoId: number,
+    promoTextCard: '',
+    promoTextCat: '',
+    volume: number,
+    viewFlags: number,
+    promotions: [],
+    sizes: [
+        {
+            name: '',
+            origName: '',
+            rank: number,
+            optionId: number,
+            stocks: [
+                {
+                    wh: number,
+                    dtype: number,
+                    qty: number,
+                    priority: number,
+                    time1: number,
+                    time2: number
+                }
+            ],
+            time1: number,
+            time2: number,
+            wh: number,
+            dtype: number,
+            price: {
+                basic: number,
+                product: number,
+                total: number,
+                logistics: number,
+                return: number
+            },
+            saleConditions: number,
+            payload: '',
+        }
+    ],
+    totalQuantity: number,
+    time1: number,
+    time2: number,
+    wh: number,
+    dtype: number
+}

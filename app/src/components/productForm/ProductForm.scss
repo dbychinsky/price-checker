@@ -1,0 +1,38 @@
+.product-form {
+    box-sizing: border-box;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+    background-color: var(--color-white);
+    padding: 10px;
+    margin: 10px;
+
+    .input-wrapper {
+        position: relative;
+
+        .input {
+            padding-right: 30px;
+        }
+    }
+
+    .top {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: start;
+        gap: 2%;
+
+        .input-wrapper {
+            width: 74%;
+        }
+
+        .select-wrapper {
+            width: 24%;
+        }
+    }
+
+    label {
+        font-size: 1.4rem;
+        color: var(--color-grey-dark);
+    }
+}

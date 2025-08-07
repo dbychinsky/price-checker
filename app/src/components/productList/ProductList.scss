@@ -1,0 +1,25 @@
+.product-list {
+    box-sizing: border-box;
+    padding: 10px;
+
+    .product-list-variation {
+        margin: 10px 0;
+    }
+}
+
+.product-list-is-empty {
+    text-align: center;
+    margin: 60px 0;
+
+    div {
+        &:first-child {
+            font-size: 18px;
+            color: var(--color-grey-dark);
+        }
+
+        &:last-child {
+            font-size: 16px;
+            color: var(--color-grey-dark);
+        }
+    }
+}

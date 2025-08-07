@@ -1,0 +1,25 @@
+$background-image: 'src/assets/img/copy.svg';
+
+.copy-button {
+    background: none;
+
+    &::before {
+        position: absolute;
+        right: 0;
+        top: 2px;
+        content: '';
+        display: block;
+        height: 20px;
+        width: 20px;
+        background-color: currentColor; // Цвет можно менять через `color`
+        color: var(--color-purple-light);
+        mask-image: url($background-image);
+        -webkit-mask-image: url($background-image); // Для Safari
+        mask-size: contain;
+        -webkit-mask-size: contain;
+        mask-repeat: no-repeat;
+        -webkit-mask-repeat: no-repeat;
+        mask-position: center;
+        -webkit-mask-position: center;
+    }
+}

@@ -1,0 +1,25 @@
+:root {
+    width: 100%;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+
+    }
+}
+
+html {
+    font-size: clamp(0.875rem, calc(0.875rem + ((100vw - 500px) / 114)), 1.25rem);
+}
+
+#root {
+
+}
+
+
+html,
+body,
+#root {
+    height: 100%;
+    margin: 0;
+}
