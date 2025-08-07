@@ -2,10 +2,10 @@ services:
   - type: web
     name: price-checker
     env: node
-    rootDir: server
+    # rootDir: server  # <-- убираем эту строку
     buildCommand: |
-      cd ../app && npm install && npm run build
-      npm install
+      cd app && npm install && npm run build
+      cd server && npm install
     startCommand: cd server && npm start
     envVars:
       - key: NODE_ENV
