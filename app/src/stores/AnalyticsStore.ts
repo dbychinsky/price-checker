@@ -1,5 +1,4 @@
 import { makeAutoObservable } from "mobx";
-import { Service } from "../service/Service.ts";
 import { IProductPrice } from '../models/Product.ts';
 
 enum CompareResults {
