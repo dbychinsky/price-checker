@@ -1,12 +1,21 @@
 const express = require('express');
 const app = express();
 const axios = require('axios');
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const API_URL_HTTPS = `https://card.wb.ru/cards`;
 const API_URL_VERSION = `/v2`;
 const API_URL_PARAM_ONE = `/detail`;
 const API_URL_CURRENCY = `?curr=`;
 const API_URL_PARAM_TWO = `&dest=-59202&nm=`;
+const path = require('path');
+
+// Добавьте до app.listen()
+app.use(express.static(path.join(__dirname, '..', 'app', 'build')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'app', 'build', 'index.html'));
+});
+
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");

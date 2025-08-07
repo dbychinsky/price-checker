@@ -10,9 +10,9 @@ export const Toast = () => {
             newestOnTop={false}
             closeOnClick
             rtl={false}
-            pauseOnFocusLoss
+            // pauseOnFocusLoss
             draggable
-            pauseOnHover
+            pauseOnHover={false}
             theme='colored'
             className='appToastContainer'
         />
