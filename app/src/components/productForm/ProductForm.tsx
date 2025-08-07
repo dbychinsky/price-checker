@@ -105,7 +105,8 @@ export const ProductForm = observer(() => {
                         ? toast.error(MessageList.ERROR_PRODUCT_EXISTS)
                         : saveProduct(responseProduct)
                 )
-                .catch(() => toast.error(MessageList.ERROR_PRODUCT_ADD))
+                // .catch(() => toast.error(MessageList.ERROR_PRODUCT_ADD))
+                .catch((error: string) => toast.error(error))
                 .finally(() => {
                     globalStore.setProductUrl('');
                     globalStore.setIsLoading(false);
@@ -133,14 +134,15 @@ export const ProductForm = observer(() => {
     const checkChangePrice = () => {
         const productListView: IProduct[] = globalStore.productListView;
 
-        service.fetchMockProducts().then((mockProducts: IProduct[]) => {
-            productListView.forEach((product) => {
-                const matchedProduct = mockProducts.find(mock => mock.id === product.id);
-                if (matchedProduct) {
-                    compareProductPrices(product, matchedProduct);
-                }
+        service.fetchMockProducts()
+            .then((mockProducts: IProduct[]) => {
+                productListView.forEach((product) => {
+                    const matchedProduct = mockProducts.find(mock => mock.id === product.id);
+                    if (matchedProduct) {
+                        compareProductPrices(product, matchedProduct);
+                    }
+                });
             });
-        });
 
         // Альтернативно, можно получать с API:
         // productListView.forEach((itemProduct) => {

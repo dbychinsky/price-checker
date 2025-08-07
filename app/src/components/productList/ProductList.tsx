@@ -1,8 +1,9 @@
 import './ProductList.scss';
-import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
-import { useStore } from '../../stores/StoreContext.ts';
-import { ProductListItem } from '../productListItem/ProductListItem.tsx';
+import {observer} from 'mobx-react-lite';
+import {useEffect} from 'react';
+import {useStore} from '../../stores/StoreContext.ts';
+import {ProductListItem} from '../productListItem/ProductListItem.tsx';
+import {ProductListIsEmpty} from './ProductListIsEmpty.tsx';
 
 /**
  * Компонент списка продуктов.
@@ -20,10 +21,13 @@ export const ProductList = observer(() => {
     }, []);
 
     return (
-        <div className='product-list'>
-            {globalStore.productListView.map(product => (
-                <ProductListItem key={product.id} product={product}/>
-            ))}
-        </div>
+        <>{globalStore.productListView.length === 0
+            ? <ProductListIsEmpty/>
+            : <div className='product-list'>
+                {globalStore.productListView.map(product => (
+                    <ProductListItem key={product.id} product={product}/>
+                ))}
+            </div>}
+        </>
     );
 });

@@ -7,7 +7,7 @@ export const Header = () => {
                 <h1>Лови цену!</h1>
                 <div className='logo'></div>
             </div>
-            <div className='title'>Цены падают — ты выигрываешь на Wildberries</div>
+            <div className='title'>Цены падают — ты выигрываешь на Wildberries</div >
         </div>
     );
 };

@@ -12,18 +12,26 @@ export class Service {
      * @description  Получение списка продуктов c WB.
      */
     async getProductFromWB(productId: number, currency: IProductCurrency): Promise<IProductResponse> {
+
+        if (!navigator.onLine) {
+            throw new Error('Нет интернет соединения').message;
+        }
+
         try {
             const response = await fetch(`${apiUrl}?id=${productId}&currency=${currency?.value}`);
             if (!response.ok) {
-                throw new Error(`Ошибка: ${response.status} ${response.statusText}`);
+                throw new Error(`Ошибка: ${response.status} ${response.statusText}`).message;
             }
 
-            return response.json();
+            return await response.json();
 
-        } catch (error) {
-            console.error('Ошибка при выполнении запроса:', error);
-            throw error; // Пробрасываем ошибку дальше
+        } catch (error: unknown) {
+            if (error instanceof TypeError) {
+                throw new Error('Отсутствует соединение с сервером (CORS|DNS|...)').message
+            }
+            throw new Error('Неизвестная ошибка').message;
         }
+
     }
 
     /**

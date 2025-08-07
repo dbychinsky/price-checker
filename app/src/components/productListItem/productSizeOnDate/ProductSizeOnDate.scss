@@ -33,17 +33,19 @@
 
         .product-description {
             display: flex;
-            gap: 10px;
+            gap: 2%;
 
             .name-size {
                 word-break: break-word;
                 font-size: 0.9rem;
                 padding: 0 4px 0 0;
+                width: 60%;
             }
 
             .orig-name-size {
                 word-break: break-word;
                 font-size: 0.9rem;
+                width: 38%;
             }
 
         }
