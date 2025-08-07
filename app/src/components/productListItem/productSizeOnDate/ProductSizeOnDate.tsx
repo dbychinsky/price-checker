@@ -1,10 +1,9 @@
-import { IProductPrice, IProductSize } from "../../../models/Product";
+import {IProductSize} from "../../../models/Product";
 import DateUtils from "../../../utils/DateUtils";
 import "./ProductSizeOnDate.scss"
-import { observer } from 'mobx-react-lite';
-import { useStore } from '../../../stores/StoreContext.ts';
-import { clsx } from 'clsx';
-import React from 'react';
+import {observer} from 'mobx-react-lite';
+
+// import { useStore } from '../../../stores/StoreContext.ts';
 
 interface ProductSizeOnDateProps {
     product: IProductSize;
@@ -21,16 +20,16 @@ interface ProductSizeOnDateProps {
  */
 export const ProductSizeOnDate = observer((props: ProductSizeOnDateProps) => {
     const {product} = props;
-    const {analyticsStore} = useStore();
+    // const {analyticsStore} = useStore();
 
-    const analytic = (priceList: IProductPrice[]): string => {
-        const result = analyticsStore.comparePriceItem(priceList)
-        if (result) {
-            return result
-        } else {
-            return ''
-        }
-    }
+    // const analytic = (priceList: IProductPrice[]): string => {
+    //     const result = analyticsStore.comparePriceItem(priceList)
+    //     if (result) {
+    //         return result
+    //     } else {
+    //         return ''
+    //     }
+    // }
 
     return (
         <div className={'product-size-on-date'}>
