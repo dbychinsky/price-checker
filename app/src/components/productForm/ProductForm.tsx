@@ -197,29 +197,37 @@ export const ProductForm = observer(() => {
 
     return (
         <div className='product-form'>
+            <div className='form'>
+                <div className='top'>
 
-            <div className={`top`}>
+                    <div className='input-wrapper'>
+                        <Input value={globalStore.productUrl}
+                               onChange={(value) => globalStore.setProductUrl(value)}
+                               placeholder={'Ссылка или артикул'}/>
+                        <PasteButton onPaste={(value) => globalStore.setProductUrl(value)}/>
+                    </div>
 
-                <div className='input-wrapper'>
-                    <Input value={globalStore.productUrl}
-                           onChange={(value) => globalStore.setProductUrl(value)}
-                           placeholder={'Ссылка или артикул'}/>
-                    <PasteButton onPaste={(value) => globalStore.setProductUrl(value)}/>
+                    <Select
+                        options={currencyList}
+                        onChange={(value) =>
+                            onChangeSelect(currencyList.find(c => c.value === value)!)
+                        }
+                        value={globalStore.currency.value}/>
                 </div>
-
-                <Select
-                    options={currencyList}
-                    onChange={(value) =>
-                        onChangeSelect(currencyList.find(c => c.value === value)!)
-                    }
-                    value={globalStore.currency.value}/>
+                <div className='bottom'>
+                    <Button
+                        text={'Добавить в список'}
+                        onClick={addProductToList}
+                        variant={'primary'}
+                    />
+                    <Button
+                        text={'Свернуть все'}
+                        onClick={() => {
+                        }}
+                        variant={'secondary'}
+                    />
+                </div>
             </div>
-
-            <Button
-                text={'Добавить в список'}
-                onClick={addProductToList}
-                variant={'primary'}
-            />
         </div>
     );
 
