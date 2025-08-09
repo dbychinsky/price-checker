@@ -63,7 +63,6 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
         );
     };
 
-
     return (
         <div
             // className={`product-list-item ${isHideContent ? 'is-hide-content' : ''}`}
@@ -74,6 +73,7 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
                 <h2 className='product-name'>
                     {product.productInsideContent.productName}
                 </h2>
+                <div className='icon'></div>
                 <CopyButton textToCopy={product.id.toString()} className={'article'}/>
             </div>
             <div className='price-list'>

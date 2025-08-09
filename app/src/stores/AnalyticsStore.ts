@@ -1,52 +1,52 @@
-import { makeAutoObservable } from "mobx";
-import { IProductPrice } from '../models/Product.ts';
+import {makeAutoObservable} from "mobx";
 
-enum CompareResults {
+export enum CompareResults {
     MORE = "MORE",
     LESS = "LESS",
     EQUAL = "EQUAL",
 }
 
-/**
- * Класс стора аналитики.
- * Отвечает за логику сравнения данных и хранение результатов.
- */
+export interface IPriceItem {
+    priceTotal: string | null;
+    dateAdded: string | Date;
+}
+
 export class AnalyticsStore {
-
-    /**
-     * Результат сравнения данных.
-     * Может принимать значения: MORE, LESS, EQUAL.
-     */
-    compareResult: CompareResults = CompareResults.EQUAL;
-
-    /**
-     * Конструктор стора аналитики.
-     * @param service - Экземпляр сервиса для работы с данными.
-     */
     constructor() {
-        makeAutoObservable(this); // Автоматически делает свойства и методы наблюдаемыми для MobX
+        makeAutoObservable(this);
     }
 
-    private parsePrice(price: string | null): number {
-        if (!price) return 0; // или другое значение по умолчанию
+    parsePrice(price: string | null): number {
+        if (!price) return 0;
         return Number(price.replace(',', '.'));
     }
 
-    comparePriceItem(priceList: IProductPrice[]): CompareResults | undefined {
-        if (priceList.length < 2) {
-            return undefined;
+    /**
+     * Возвращает список CompareResults для priceList
+     */
+    getPriceComparisons(priceList: IPriceItem[]): (CompareResults | "")[] {
+        const results: (CompareResults | "")[] = [];
+
+        for (let i = 0; i < priceList.length; i++) {
+            if (i === 0) {
+                // Для первого элемента возвращаем пустую строку, чтобы не добавлять класс
+                results.push("");
+                continue;
+            }
+
+            const current = this.parsePrice(priceList[i]?.priceTotal);
+            const prev = this.parsePrice(priceList[i - 1]?.priceTotal);
+
+            if (current === prev) {
+                results.push(CompareResults.EQUAL);
+            } else if (current > prev) {
+                results.push(CompareResults.MORE);
+            } else {
+                results.push(CompareResults.LESS);
+            }
         }
 
-        const sortedList = [...priceList].sort(
-            (a, b) => new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime()
-        );
-
-        const prevPrice = this.parsePrice(sortedList[sortedList.length - 2].priceTotal);
-        const currentPrice = this.parsePrice(sortedList[sortedList.length - 1].priceTotal);
-
-        if (currentPrice > prevPrice) return CompareResults.MORE;
-        if (currentPrice < prevPrice) return CompareResults.LESS;
-        return CompareResults.EQUAL;
+        return results;
     }
 
 }

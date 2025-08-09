@@ -127,7 +127,7 @@ export class GlobalStore {
     }
 
     /**
-     * Добавляет новые цены в priceList размера, ограничивая длину 3.
+     * Добавляет новые цены в priceList размера, ограничивая длину 2.
      * @param existingSize - Размер с текущим priceList.
      * @param newPrices - Массив новых цен.
      */
@@ -138,8 +138,8 @@ export class GlobalStore {
             );
             if (!alreadyExists) {
                 existingSize.priceList.push(newPrice);
-                if (existingSize.priceList.length > 3) {
-                    existingSize.priceList = existingSize.priceList.slice(-3);
+                if (existingSize.priceList.length > 2) {
+                    existingSize.priceList = existingSize.priceList.slice(-2);
                 }
             }
         });

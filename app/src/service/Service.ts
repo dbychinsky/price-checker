@@ -16,9 +16,9 @@ export class Service {
         if (!navigator.onLine) {
             throw new Error('Нет интернет соединения').message;
         }
-
         try {
             const response = await fetch(`${apiUrl}?id=${productId}&currency=${currency?.value}`);
+
             if (!response.ok) {
                 throw new Error(`Ошибка: ${response.status} ${response.statusText}`).message;
             }

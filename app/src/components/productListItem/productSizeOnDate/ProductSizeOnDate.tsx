@@ -2,6 +2,7 @@ import {IProductSize} from "../../../models/Product";
 import DateUtils from "../../../utils/DateUtils";
 import "./ProductSizeOnDate.scss"
 import {observer} from 'mobx-react-lite';
+import {useStore} from "../../../stores/StoreContext.ts";
 
 interface ProductSizeOnDateProps {
     product: IProductSize;
@@ -18,16 +19,7 @@ interface ProductSizeOnDateProps {
  */
 export const ProductSizeOnDate = observer((props: ProductSizeOnDateProps) => {
     const {product} = props;
-    // const {analyticsStore} = useStore();
-
-    // const analytic = (priceList: IProductPrice[]): string => {
-    //     const result = analyticsStore.comparePriceItem(priceList)
-    //     if (result) {
-    //         return result
-    //     } else {
-    //         return ''
-    //     }
-    // }
+    const {analyticsStore} = useStore();
 
     return (
         <div className={'product-size-on-date'}>
@@ -40,31 +32,37 @@ export const ProductSizeOnDate = observer((props: ProductSizeOnDateProps) => {
                 ))}
             </div>
 
-            {product.size.map((itemSize, index) => (
-                <div key={index} className='product-foreign-info'>
-                    <div className='product-description'>
-                        {itemSize.nameSize && (
-                            <div className='name-size'>{itemSize.nameSize}</div>
-                        )}
-                        {itemSize.origNameSize &&
-                            itemSize.origNameSize !== '0' &&
-                            itemSize.origNameSize !== itemSize.nameSize && (
-                                <div className='orig-name-size'>{itemSize.origNameSize}</div>
+            {product.size.map((itemSize, sizeIndex) => {
+                const comparisons = analyticsStore.getPriceComparisons(itemSize.priceList);
+                return (
+                    <div key={sizeIndex} className='product-foreign-info'>
+                        <div className='product-description'>
+                            {itemSize.nameSize && (
+                                <div className='name-size'>{itemSize.nameSize}</div>
                             )}
-                    </div>
-                    <div className={'sum-list'}>
-                        {itemSize.priceList.map((itemPrice, index) => (
-                            <div key={`cell-${index}`} className={'cell'}>
-                                {itemPrice.priceTotal !== null ? (
-                                    itemPrice.priceTotal
-                                ) : (
-                                    <div className="emptySum">Товар отсутствует</div>
+                            {itemSize.origNameSize &&
+                                itemSize.origNameSize !== '0' &&
+                                itemSize.origNameSize !== itemSize.nameSize && (
+                                    <div className='orig-name-size'>{itemSize.origNameSize}</div>
                                 )}
-                            </div>
-                        ))}
+                        </div>
+                        <div className={'sum-list'}>
+                            {itemSize.priceList.map((itemPrice, priceIndex) => {
+                                const compareClass = comparisons[priceIndex]?.toLowerCase() || '';
+                                return (
+                                    <div key={`cell-${priceIndex}`} className={`cell ${compareClass}`}>
+                                        {itemPrice.priceTotal !== null ? (
+                                            itemPrice.priceTotal
+                                        ) : (
+                                            <div className="emptySum">Товар отсутствует</div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
-                </div>
-            ))}
+                );
+            })}
         </div>
     );
 });

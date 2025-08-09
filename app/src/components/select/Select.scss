@@ -23,12 +23,16 @@ $background-image: url('../../assets/img/arrow.svg');
     .icon {
         width: 16px;
         height: 16px;
-        background-color: var(--color-grey-dark);
-        mask: $background-image no-repeat center;
-        mask-size: contain;
-        -webkit-mask: $background-image no-repeat center;
-        -webkit-mask-size: contain;
-        transition: transform 0.3s ease;
+        //background-color: var(--color-grey-dark);
+        //mask: $background-image no-repeat center;
+        //mask-size: contain;
+        //-webkit-mask: $background-image no-repeat center;
+        //-webkit-mask-size: contain;
+        //transition: transform 0.3s ease;
+
+        color: var(--color-grey-dark);
+        background: $background-image center center no-repeat;
+        background-size: 20px;
     }
 
     &.open .icon {

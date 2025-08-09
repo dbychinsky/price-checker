@@ -49,6 +49,7 @@ export const CopyButton: React.FC<CopyButtonProps> = observer((
         <Button onClick={handleCopy}
                 text={textToCopy}
                 className={`copy-button ${className}`}
-                variant={'iconText'}/>
+                variant={'iconText'}
+        />
     );
 });

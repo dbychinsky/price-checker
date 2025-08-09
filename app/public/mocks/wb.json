@@ -1,7 +1,7 @@
 [
   {
     "id": 81913315,
-    "dateAddingProduct": "2025-06-15T09:11:40.672Z",
+    "dateAddingProduct": "2025-08-10T06:20:17.168Z",
     "productInsideContent": {
       "productName": "Шорты для новорожденных",
       "productSize": [
@@ -12,10 +12,10 @@
               "origNameSize": "68",
               "priceList": [
                 {
-                  "priceTotal": "501,00",
-                  "priceBasic": "585,00",
-                  "priceProduct": "449,00",
-                  "dateAdded": "2025-06-15T09:11:40.672Z"
+                  "priceTotal": "25,52",
+                  "priceBasic": "35,58",
+                  "priceProduct": "17,57",
+                  "dateAdded": "2025-08-10T06:20:17.168Z"
                 }
               ]
             },
@@ -24,10 +24,10 @@
               "origNameSize": "74",
               "priceList": [
                 {
-                  "priceTotal": "499,00",
-                  "priceBasic": "585,00",
-                  "priceProduct": "449,00",
-                  "dateAdded": "2025-06-15T09:11:40.672Z"
+                  "priceTotal": "17,52",
+                  "priceBasic": "35,58",
+                  "priceProduct": "17,57",
+                  "dateAdded": "2025-08-10T06:20:17.168Z"
                 }
               ]
             },
@@ -36,10 +36,10 @@
               "origNameSize": "80",
               "priceList": [
                 {
-                  "priceTotal": "400,00",
-                  "priceBasic": "585,00",
-                  "priceProduct": "449,00",
-                  "dateAdded": "2025-06-15T09:11:40.672Z"
+                  "priceTotal": "19,53",
+                  "priceBasic": "35,58",
+                  "priceProduct": "17,57",
+                  "dateAdded": "2025-08-10T06:20:17.168Z"
                 }
               ]
             },
@@ -48,10 +48,10 @@
               "origNameSize": "86",
               "priceList": [
                 {
-                  "priceTotal": "600,00",
-                  "priceBasic": "585,00",
-                  "priceProduct": "449,00",
-                  "dateAdded": "2025-06-15T09:11:40.672Z"
+                  "priceTotal": "19,52",
+                  "priceBasic": "35,58",
+                  "priceProduct": "17,57",
+                  "dateAdded": "2025-08-10T06:20:17.168Z"
                 }
               ]
             },
@@ -60,10 +60,10 @@
               "origNameSize": "92",
               "priceList": [
                 {
-                  "priceTotal": "499,00",
-                  "priceBasic": "585,00",
-                  "priceProduct": "449,00",
-                  "dateAdded": "2025-06-15T09:11:40.672Z"
+                  "priceTotal": "19,52",
+                  "priceBasic": "35,58",
+                  "priceProduct": "17,57",
+                  "dateAdded": "2025-08-10T06:20:17.168Z"
                 }
               ]
             },
@@ -72,10 +72,10 @@
               "origNameSize": "98",
               "priceList": [
                 {
-                  "priceTotal": "499,00",
-                  "priceBasic": "585,00",
-                  "priceProduct": "449,00",
-                  "dateAdded": "2025-06-15T09:11:40.672Z"
+                  "priceTotal": "19,53",
+                  "priceBasic": "35,58",
+                  "priceProduct": "17,57",
+                  "dateAdded": "2025-08-10T06:20:17.168Z"
                 }
               ]
             },
@@ -84,10 +84,10 @@
               "origNameSize": "104",
               "priceList": [
                 {
-                  "priceTotal": "499,00",
-                  "priceBasic": "585,00",
-                  "priceProduct": "449,00",
-                  "dateAdded": "2025-06-15T09:11:40.672Z"
+                  "priceTotal": "19,53",
+                  "priceBasic": "35,58",
+                  "priceProduct": "17,57",
+                  "dateAdded": "2025-08-10T06:20:17.168Z"
                 }
               ]
             },
@@ -96,10 +96,10 @@
               "origNameSize": "110",
               "priceList": [
                 {
-                  "priceTotal": "499,00",
-                  "priceBasic": "585,00",
-                  "priceProduct": "449,00",
-                  "dateAdded": "2025-06-15T09:11:40.672Z"
+                  "priceTotal": "19,53",
+                  "priceBasic": "35,58",
+                  "priceProduct": "17,57",
+                  "dateAdded": "2025-08-10T06:20:17.168Z"
                 }
               ]
             },
@@ -108,35 +108,10 @@
               "origNameSize": "116",
               "priceList": [
                 {
-                  "priceTotal": "499,00",
-                  "priceBasic": "585,00",
-                  "priceProduct": "449,00",
-                  "dateAdded": "2025-06-15T09:11:40.672Z"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  },
-  {
-    "id": 251750676,
-    "dateAddingProduct": "2025-06-15T09:11:40.686Z",
-    "productInsideContent": {
-      "productName": "Струйное МФУ L3250 (C11CJ67418)",
-      "productSize": [
-        {
-          "size": [
-            {
-              "nameSize": "",
-              "origNameSize": "0",
-              "priceList": [
-                {
-                  "priceTotal": "145,00",
-                  "priceBasic": "16437,00",
-                  "priceProduct": "13097,00",
-                  "dateAdded": "2025-06-15T09:11:40.686Z"
+                  "priceTotal": "19,52",
+                  "priceBasic": "35,58",
+                  "priceProduct": "17,57",
+                  "dateAdded": "2025-08-10T06:20:17.168Z"
                 }
               ]
             }
