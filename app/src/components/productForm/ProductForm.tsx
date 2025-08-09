@@ -17,20 +17,21 @@ import {PasteButton} from '../pasteButton/PasteButton.tsx';
 import {InputDataProductRequest} from '../../common/enum/InputDataProductRequest.ts';
 
 /**
- * Компонент формы для добавления и отображения списка продуктов.
- * Позволяет вводить URL или артикул продукта, выбирать валюту,
- * загружать список из LocalStorage, проверять и обновлять цены продуктов.
- * Использует MobX для управления состоянием и сервис для работы с API и LocalStorage.
+ * Компонент формы для управления списком продуктов.
+ * Позволяет добавлять продукты по URL или артикулу,
+ * выбирать валюту, а также сворачивать и разворачивать весь список.
+ *
+ * Использует MobX для управления состоянием и сервис для API и LocalStorage.
  *
  * @component
- * @returns {JSX.Element} React компонент формы продуктов
+ * @returns {JSX.Element} React-компонент формы продуктов
  */
 export const ProductForm = observer(() => {
     const {globalStore, service} = useStore();
 
     /**
-     * Загружает продукты из LocalStorage при монтировании
-     * и проверяет изменение цен.
+     * Загружает продукты из localStorage при первом рендере.
+     * Если есть продукты, проверяет изменение цен.
      */
     useEffect(() => {
         globalStore.loadFromLocalStorage().then(() => {
@@ -41,8 +42,8 @@ export const ProductForm = observer(() => {
     }, []);
 
     /**
-     * Загружает текущую валюту из LocalStorage
-     * или устанавливает валюту по умолчанию.
+     * Загружает текущую валюту из localStorage,
+     * либо устанавливает валюту по умолчанию.
      */
     useEffect(() => {
         const currentCurrency: IProductCurrency = service.loadCurrentCurrencyToLocalStorage();
@@ -54,8 +55,8 @@ export const ProductForm = observer(() => {
     }, []);
 
     /**
-     * При изменении валюты обновляет данные продуктов
-     * из API и проверяет цены.
+     * При изменении валюты обновляет данные продуктов из API
+     * и проверяет изменение цен.
      */
     useEffect(() => {
         globalStore.productListView.map((productItem) => {
@@ -69,8 +70,8 @@ export const ProductForm = observer(() => {
     }, [globalStore.currency]);
 
     /**
-     * Обрабатывает выбор новой валюты.
-     * @param {IProductCurrency} value - выбранная валюта
+     * Обработчик изменения выбранной валюты.
+     * @param {IProductCurrency} value - новая валюта
      */
     const onChangeSelect = (value: IProductCurrency) => {
         if (!value) return;
@@ -78,9 +79,9 @@ export const ProductForm = observer(() => {
     };
 
     /**
-     * Добавляет продукт в список по введенному URL или артикулу.
-     * Загружает данные из API и сохраняет в стор и LocalStorage.
-     * Показывает сообщения об ошибках при необходимости.
+     * Добавляет продукт в список по введённому URL или артикулу.
+     * Парсит ввод, получает данные с API, проверяет дубли,
+     * сохраняет в стор и localStorage, выводит ошибки через toast.
      */
     const addProductToList = () => {
         globalStore.setIsLoading(true);
@@ -117,8 +118,8 @@ export const ProductForm = observer(() => {
     };
 
     /**
-     * Сохраняет продукт в стор и LocalStorage.
-     * @param {IProductResponse} response - ответ API с данными продукта
+     * Сохраняет полученный продукт в стор и localStorage.
+     * @param {IProductResponse} response - данные продукта из API
      */
     const saveProduct = (response: IProductResponse) => {
         const productConvertedView = Serialize.responseToView(response);
@@ -127,37 +128,38 @@ export const ProductForm = observer(() => {
     };
 
     /**
-     * Проверяет изменение цен у продуктов в списке.
-     * Сравнивает данные из стора и моковых данных (или API).
+     * Проверяет изменение цен у продуктов, получая актуальные данные из API.
+     * Сравнивает текущие продукты с новыми данными.
      */
     const checkChangePrice = () => {
         const productListView: IProduct[] = globalStore.productListView;
 
-        service.fetchMockProducts()
-            .then((mockProducts: IProduct[]) => {
-                productListView.forEach((product) => {
-                    const matchedProduct = mockProducts.find(mock => mock.id === product.id);
-                    if (matchedProduct) {
-                        compareProductPrices(product, matchedProduct);
-                    }
-                });
-            });
+        // service.fetchMockProducts()
+        //     .then((mockProducts: IProduct[]) => {
+        //         productListView.forEach((product) => {
+        //             const matchedProduct = mockProducts.find(mock => mock.id === product.id);
+        //             if (matchedProduct) {
+        //                 compareProductPrices(product, matchedProduct);
+        //             }
+        //         });
+        //     });
 
         // Альтернативно, можно получать с API:
-        // productListView.forEach((itemProduct) => {
-        //     service.getProductFromWB(itemProduct.id, globalStore.currency)
-        //         .then((response) => {
-        //             const responseProduct: IProduct = Serialize.responseToView(response);
-        //             compareProductPrices(itemProduct, responseProduct);
-        //         });
-        // });
+        productListView.forEach((itemProduct) => {
+            service.getProductFromWB(itemProduct.id, globalStore.currency)
+                .then((response) => {
+                    const responseProduct: IProduct = Serialize.responseToView(response);
+                    compareProductPrices(itemProduct, responseProduct);
+                });
+        });
     };
 
     /**
-     * Сравнивает цены старого и нового продукта и обновляет историю,
-     * если цены изменились.
-     * @param {IProduct | undefined} itemProduct - старый продукт
-     * @param {IProduct | undefined} responseProduct - новый продукт
+     * Сравнивает цены старого и нового продукта.
+     * Если цены отличаются, обновляет историю размеров.
+     *
+     * @param {IProduct | undefined} itemProduct - текущий продукт
+     * @param {IProduct | undefined} responseProduct - новый продукт из API
      */
     const compareProductPrices = (itemProduct: IProduct | undefined, responseProduct: IProduct | undefined) => {
         if (!itemProduct || !itemProduct.productInsideContent || !itemProduct.productInsideContent.productSize?.length) {
@@ -188,31 +190,40 @@ export const ProductForm = observer(() => {
     };
 
     /**
-     * Определяет, является ли введённое значение URL или артикулом.
+     * Определяет, что введено — URL или артикул.
+     *
      * @param {string} inputText - введённый текст
      * @returns {InputDataProductRequest} тип введённых данных
      */
     const checkingValueInput = (inputText: string): InputDataProductRequest =>
         /\D/.test(inputText) ? InputDataProductRequest.PRODUCT_URL : InputDataProductRequest.PRODUCT_ARTICLE;
 
+    /**
+     * Переключает состояние сворачивания/разворачивания всего списка продуктов.
+     */
+    const toggleCollapseAll = () => {
+        globalStore.setCollapseAll(!globalStore.collapseAll);
+    };
+
     return (
         <div className='product-form'>
             <div className='form'>
                 <div className='top'>
-
                     <div className='input-wrapper'>
-                        <Input value={globalStore.productUrl}
-                               onChange={(value) => globalStore.setProductUrl(value)}
-                               placeholder={'Ссылка или артикул'}/>
+                        <Input
+                            value={globalStore.productUrl}
+                            onChange={(value) => globalStore.setProductUrl(value)}
+                            placeholder={'Ссылка или артикул'}
+                        />
                         <PasteButton onPaste={(value) => globalStore.setProductUrl(value)}/>
                     </div>
-
                     <Select
                         options={currencyList}
                         onChange={(value) =>
                             onChangeSelect(currencyList.find(c => c.value === value)!)
                         }
-                        value={globalStore.currency.value}/>
+                        value={globalStore.currency.value}
+                    />
                 </div>
                 <div className='bottom'>
                     <Button
@@ -221,14 +232,12 @@ export const ProductForm = observer(() => {
                         variant={'primary'}
                     />
                     <Button
-                        text={'Свернуть все'}
-                        onClick={() => {
-                        }}
+                        text={globalStore.collapseAll ? 'Развернуть список' : 'Свернуть список'}
+                        onClick={toggleCollapseAll}
                         variant={'secondary'}
                     />
                 </div>
             </div>
         </div>
     );
-
 });

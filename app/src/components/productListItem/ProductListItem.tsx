@@ -3,56 +3,80 @@ import {observer} from 'mobx-react-lite';
 import {Button} from '../button/Button.tsx';
 import {IProduct} from '../../models/Product.ts';
 import {useStore} from '../../stores/StoreContext.ts';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {CopyButton} from "../copyButton/CopyButton.tsx";
 import {ProductSizeOnDate} from './productSizeOnDate/ProductSizeOnDate.tsx';
 import {clsx} from 'clsx';
 import {ConfirmModal} from '../сonfirmModal/ConfirmModal.tsx';
 
 interface ProductListItemProps {
+    /** Продукт для отображения */
     product: IProduct;
 }
 
 /**
- * Компонент для отображения одного продукта в списке.
- * Показывает название продукта, кнопку копирования ID, цены по размерам,
- * а также кнопки для удаления и перехода в каталог.
+ * Компонент отображения одного элемента списка продуктов.
+ * Отображает основную информацию, список размеров с ценами,
+ * кнопки для удаления и перехода в каталог,
+ * а также модальное окно подтверждения удаления.
  *
- * @param {ProductListItemProps} props - Свойства компонента
- * @param {IProduct} props.product - Объект продукта для отображения
- * @returns {JSX.Element} React элемент продукта в списке
+ * @param {ProductListItemProps} props - пропсы компонента
+ * @returns {JSX.Element} - JSX элемент компонента
  */
-export const ProductListItem = observer((props: ProductListItemProps) => {
-    const {product} = props;
+export const ProductListItem = observer(({product}: ProductListItemProps) => {
     const {globalStore} = useStore();
-    const [isHideContent, setIsHideContent] = useState(true);
+
+    /** Локальное состояние для сворачивания/разворачивания контента */
+    const [isHideContent, setIsHideContent] = useState(globalStore.collapseAll);
+
+    /** Локальное состояние для отображения модального окна подтверждения удаления */
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    /** URL Wildberries из переменных окружения */
     const wildberriesUrlEnv = import.meta.env.VITE_WILDBERRIES_URL;
 
+    /**
+     * Синхронизация локального состояния isHideContent с глобальным collapseAll
+     * при изменении глобального состояния.
+     */
+    useEffect(() => {
+        setIsHideContent(globalStore.collapseAll);
+    }, [globalStore.collapseAll]);
+
+    /** Обработчик клика по элементу для переключения сворачивания контента */
     const handleClick = () => {
         setIsHideContent(prev => !prev);
     };
 
+    /** Классы для корневого элемента компонента */
     const productListItemWrapper = clsx(
         'product-list-item',
         {'is-hide-content': isHideContent}
     );
 
+    /**
+     * Открыть модальное окно подтверждения удаления.
+     * @param {React.MouseEvent<HTMLButtonElement>} e - событие клика по кнопке
+     */
     const openModal = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
         setIsModalOpen(true);
     };
 
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
+    /** Закрыть модальное окно */
+    const closeModal = () => setIsModalOpen(false);
 
+    /** Подтверждение удаления: удаляет продукт из глобального стора и закрывает модал */
     const confirmDelete = () => {
         globalStore.removeProduct(product.id);
         setIsModalOpen(false);
     };
 
+    /**
+     * Открыть страницу продукта на Wildberries в новой вкладке.
+     * @param {number} id - ID продукта
+     * @param {React.MouseEvent<HTMLElement>} [e] - необязательное событие клика для остановки всплытия
+     */
     const goToProduct = (id: number, e?: React.MouseEvent<HTMLElement>) => {
         e?.stopPropagation();
         window.open(
@@ -64,7 +88,6 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
 
     return (
         <div
-            // className={`product-list-item ${isHideContent ? 'is-hide-content' : ''}`}
             className={productListItemWrapper}
             onClick={handleClick}
         >
@@ -79,7 +102,8 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
                 {product.productInsideContent.productSize.map((productSize, index) => (
                     <ProductSizeOnDate
                         product={productSize}
-                        key={index}/>
+                        key={index}
+                    />
                 ))}
             </div>
             <div className='product-list-buttons'>
@@ -91,7 +115,6 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
                 />
                 <Button
                     text={'Перейти в каталог'}
-                    // onClick={() => globalStore.removeProduct(product.id)}
                     onClick={(e) => goToProduct(product.id, e)}
                     variant={'secondary'}
                     className={'purple'}
@@ -104,5 +127,4 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
             />
         </div>
     );
-
 });

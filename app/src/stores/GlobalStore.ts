@@ -5,31 +5,37 @@ import {Service} from "../service/Service.ts";
 import {getLocalStorageSizeInMB} from "../utils/GetLocalStorageSizeInMB.ts";
 import DateUtils from "../utils/DateUtils.ts";
 
-/**
- * Глобальный MobX-стор приложения для управления продуктами, валютой и состоянием загрузки.
- */
 export class GlobalStore {
-    /** Сервис для работы с API и LocalStorage */
     private service: Service;
 
-    /** Индикатор загрузки данных */
+    /** Флаг загрузки данных */
     isLoading = false;
 
-    /** Введённый URL продукта */
+    /** Текущий URL продукта, введённый пользователем */
     productUrl = '';
 
-    /** Текущая валюта приложения */
+    /** Текущая валюта */
     currency: IProductCurrency;
 
-    /** Список отображаемых продуктов (из localStorage) */
+    /** Список продуктов для отображения */
     productListView: IProduct[] = [];
 
-    /** Список актуальных продуктов с сервера (для сравнения) */
+    /** Список продуктов, загруженных с WB (может быть временный/для других целей) */
     productListFromWb: IProduct[] = [];
 
-    /** Заполненность localStorage в МБ */
+    /** Размер данных, занятых в localStorage (Мб) */
     fullFilledLS = 0;
 
+    /** Флаг для сворачивания/разворачивания всех продуктов */
+    collapseAll = false;
+
+    /**
+     * Конструктор глобального стора.
+     * Инициализирует сервис, валюту из localStorage,
+     * настраивает реактивные реакции MobX.
+     *
+     * @param {Service} service - экземпляр сервиса для работы с API и localStorage
+     */
     constructor(service: Service) {
         this.service = service;
         this.currency = service.loadCurrentCurrencyToLocalStorage();
@@ -49,26 +55,58 @@ export class GlobalStore {
         );
     }
 
+    /**
+     * Устанавливает флаг сворачивания/разворачивания всех продуктов.
+     * @param {boolean} value - новое значение collapseAll
+     */
+    setCollapseAll = (value: boolean) => {
+        this.collapseAll = value;
+    };
+
+    /**
+     * Устанавливает URL продукта.
+     * @param {string} url - URL или артикул продукта
+     */
     setProductUrl = (url: string) => {
         this.productUrl = url;
     };
 
+    /**
+     * Устанавливает флаг загрузки.
+     * @param {boolean} loading - статус загрузки
+     */
     setIsLoading = (loading: boolean) => {
         this.isLoading = loading;
     };
 
+    /**
+     * Устанавливает текущую валюту.
+     * @param {IProductCurrency} currency - валюта
+     */
     setCurrency = (currency: IProductCurrency) => {
         this.currency = currency;
     };
 
+    /**
+     * Добавляет продукт в список для отображения.
+     * @param {IProduct} product - продукт для добавления
+     */
     setProductListView = (product: IProduct) => {
         this.productListView.push(product);
     };
 
+    /**
+     * Добавляет продукт в список, загруженный с WB.
+     * @param {IProduct} product - продукт
+     */
     setProductListFromWb = (product: IProduct) => {
         this.productListFromWb.push(product);
     };
 
+    /**
+     * Загружает список продуктов из localStorage в стор.
+     * Асинхронная функция.
+     */
     loadFromLocalStorage = async () => {
         const products = await this.service.loadProductFromLocalStorage();
         runInAction(() => {
@@ -76,13 +114,21 @@ export class GlobalStore {
         });
     };
 
+    /**
+     * Удаляет продукт из списка по ID и обновляет localStorage.
+     * @param {number} productId - ID продукта для удаления
+     */
     removeProduct = (productId: number) => {
         this.productListView = this.productListView.filter(p => p.id !== productId);
         this.service.removeProductFromLocalStorage(productId);
     };
 
     /**
-     * Проверяет, совпадают ли два объекта цены с учётом даты.
+     * Сравнивает две цены продуктов с учётом даты.
+     * @private
+     * @param {IProductPrice} a - первая цена
+     * @param {IProductPrice} b - вторая цена
+     * @returns {boolean} true, если цены равны
      */
     private isPriceEqual(a: IProductPrice, b: IProductPrice): boolean {
         const dateA = a.dateAdded instanceof Date ? a.dateAdded : DateUtils.parse(a.dateAdded);
@@ -97,7 +143,11 @@ export class GlobalStore {
     }
 
     /**
-     * Добавляет новые цены в priceList размера, учитывая дату, с ограничением длины 2.
+     * Добавляет новые цены в существующий размер, избегая дубликатов.
+     * Сохраняет только последние 2 записи.
+     * @private
+     * @param {ISize} existingSize - существующий размер продукта
+     * @param {IProductPrice[]} newPrices - новые цены для добавления
      */
     private addNewPrices(existingSize: ISize, newPrices: IProductPrice[]) {
         newPrices.forEach(newPrice => {
@@ -113,6 +163,12 @@ export class GlobalStore {
         });
     }
 
+    /**
+     * Обновляет последний элемент в истории размеров новыми размерами и ценами.
+     * @private
+     * @param {IProductSize} latestEntry - последний элемент истории размеров
+     * @param {IProductSize["size"]} newSizes - новые размеры для обновления
+     */
     private updateLatestEntry(latestEntry: IProductSize, newSizes: IProductSize["size"]) {
         newSizes.forEach(newSize => {
             const matchedSize = latestEntry.size.find(
@@ -132,6 +188,11 @@ export class GlobalStore {
         });
     }
 
+    /**
+     * Обновляет историю размеров продукта по ID, добавляя новые данные.
+     * @param {number} productId - ID продукта
+     * @param {IProductSize} newSizeData - новые данные размеров продукта
+     */
     updateProductSizeHistory = (
         productId: number,
         newSizeData: IProductSize
@@ -161,6 +222,10 @@ export class GlobalStore {
         this.service.updateProductInLocalStorage(product);
     };
 
+    /**
+     * Обновляет размер, занимаемый данными в localStorage.
+     * @param {number} value - размер в Мб
+     */
     calcFullFilledLS = (value: number) => {
         this.fullFilledLS = value;
     };

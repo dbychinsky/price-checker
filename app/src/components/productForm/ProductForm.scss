@@ -9,7 +9,7 @@
         flex-flow: column nowrap;
         gap: 10px;
         padding: 10px;
-        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.01);
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
 
         background-color: var(--color-white);
     }
@@ -41,6 +41,23 @@
 
         .select-wrapper {
             width: 24%;
+        }
+    }
+
+    .bottom {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: start;
+        gap: 2%;
+
+        .primary {
+            width: 74%;
+        }
+
+        .secondary {
+            width: 24%;
+            font-size: 11px;
         }
     }
 
