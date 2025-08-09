@@ -1,4 +1,4 @@
-const CACHE_NAME = 'price-checker-cache-v1';
+const CACHE_NAME = 'beta-price-checker-cache-v1';
 const urlsToCache = [
     '/app/',
     '/app/index.html',
