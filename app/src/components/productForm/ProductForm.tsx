@@ -114,6 +114,7 @@ export const ProductForm = observer(() => {
 
         } else {
             toast.error(MessageList.ERROR_EMPTY_URL);
+            globalStore.setIsLoading(false);
         }
     };
 
