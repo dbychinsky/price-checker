@@ -4,6 +4,7 @@ import {useEffect} from 'react';
 import {useStore} from '../../stores/StoreContext.ts';
 import {ProductListItem} from '../productListItem/ProductListItem.tsx';
 import {ProductListIsEmpty} from './ProductListIsEmpty.tsx';
+import {Loader} from "../loader/Loader.tsx";
 
 /**
  * Компонент списка продуктов.
@@ -21,13 +22,19 @@ export const ProductList = observer(() => {
     }, []);
 
     return (
-        <>{globalStore.productListView.length === 0
-            ? <ProductListIsEmpty/>
-            : <div className='product-list'>
-                {globalStore.productListView.map(product => (
-                    <ProductListItem key={product.id} product={product}/>
-                ))}
-            </div>}
+        <>
+            {globalStore.isLoading ? (
+                <Loader size={50} color="#007bff"/>
+            ) : globalStore.productListView.length === 0 ? (
+                <ProductListIsEmpty/>
+            ) : (
+                <div className='product-list'>
+                    {globalStore.productListView.map(product => (
+                        <ProductListItem key={product.id} product={product}/>
+                    ))}
+                </div>
+            )}
         </>
+
     );
 });

@@ -1,7 +1,7 @@
 import './App.scss';
 import {Footer} from "./components/footer/Footer.tsx";
 import {observer} from "mobx-react-lite";
-import {FakeButtons} from "./components/fakeButtons/FakeButtons.tsx";
+// import {FakeButtons} from "./components/fakeButtons/FakeButtons.tsx";
 import {ProductForm} from "./components/productForm/ProductForm.tsx";
 import {ProductList} from './components/productList/ProductList.tsx';
 import {StoreContext} from './stores/StoreContext.ts';
@@ -19,7 +19,7 @@ export const App = observer(() => {
                     <ProductList/>
                     <Toast/>
                 </div>
-                <FakeButtons/>
+                {/*<FakeButtons/>*/}
                 <Footer/>
             </div>
         </StoreContext.Provider>

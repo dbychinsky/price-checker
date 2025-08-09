@@ -31,7 +31,6 @@ export class Service {
             }
             throw new Error('Неизвестная ошибка').message;
         }
-
     }
 
     /**
@@ -47,6 +46,7 @@ export class Service {
 
             const data: IProduct[] = await response.json();
             return data;
+
         } catch (error) {
             console.error('Ошибка загрузки моковых данных:', error);
             return [];

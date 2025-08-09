@@ -1,0 +1,17 @@
+.loader {
+    display: inline-block;
+    border: 4px solid; // толщина обводки
+    border-radius: 50%; // круг
+    animation: spin 1.2s linear infinite;
+    box-sizing: border-box;
+    margin: 40px auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

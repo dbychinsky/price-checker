@@ -235,6 +235,7 @@ export const ProductForm = observer(() => {
                         text={globalStore.collapseAll ? 'Развернуть список' : 'Свернуть список'}
                         onClick={toggleCollapseAll}
                         variant={'secondary'}
+                        isDisabled={globalStore.productListView.length === 0 ? true : false}
                     />
                 </div>
             </div>

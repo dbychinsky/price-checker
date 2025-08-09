@@ -27,7 +27,7 @@ export class GlobalStore {
     fullFilledLS = 0;
 
     /** Флаг для сворачивания/разворачивания всех продуктов */
-    collapseAll = false;
+    collapseAll = true;
 
     /**
      * Конструктор глобального стора.
