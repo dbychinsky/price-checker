@@ -30,7 +30,6 @@ export const ProductListItem = observer((props: ProductListItemProps) => {
 
     const wildberriesUrlEnv = import.meta.env.VITE_WILDBERRIES_URL;
 
-
     const handleClick = () => {
         setIsHideContent(prev => !prev);
     };

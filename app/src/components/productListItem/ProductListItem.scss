@@ -2,11 +2,12 @@ $background-icon: url('../../assets/img/arrow.svg');
 
 .product-list-item {
     box-sizing: border-box;
-    margin-bottom: 10px;
-    padding: 10px;
+    margin-bottom: 8px;
+    padding: 8px;
     background-color: var(--color-white);
     border-radius: 6px;
     border: 1px solid var(--color-white);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.01);
 
     &.is-changed {
         border: 1px solid var(--color-purple-light);
@@ -30,28 +31,29 @@ $background-icon: url('../../assets/img/arrow.svg');
 
     .main-info {
         display: flex;
-        gap: 10px;
+        gap: 4px;
         flex-flow: row wrap;
         align-items: flex-start;
+        justify-content: space-between;
 
         .product-name {
-            font-size: 1.3rem;
+            font-size: 16px;
             font-weight: 400;
-            width: 86%;
+            width: 87%;
             margin: 0;
         }
 
         .icon {
-            width: 10%;
+            width: 23px;
             height: 20px;
-            background: $background-icon center center no-repeat;
-            background-size: 27px;
+            background: $background-icon center right no-repeat;
+            background-size: 30px;
             transition: transform .1s ease-in-out;
             transform: rotate(180deg);
         }
 
         .article {
-            font-size: 14px;
+            font-size: 12px;
             color: var(--color-grey-dark);
             display: flex;
             align-items: center;

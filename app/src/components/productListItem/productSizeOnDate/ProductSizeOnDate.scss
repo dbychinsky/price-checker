@@ -59,11 +59,13 @@
                 text-align: center;
                 font-size: 0.9rem;
                 color: var(--color-grey-dark2);
+
                 &.less {
-                    color: green;
+                    color: var(--color-green);
                 }
-                &.more{
-                    color: red;
+
+                &.more {
+                    color: var(--color-red2);
                 }
             }
         }
